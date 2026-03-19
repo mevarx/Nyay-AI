@@ -2,23 +2,54 @@
 .auth-page {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--color-bg);
-  padding: var(--space-6);
+  padding: var(--space-8) var(--space-4);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Navbar on auth pages should be absolute to avoid pushing content */
+.navbar--auth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent !important;
+  border-bottom: none !important;
+  pointer-events: none;
+}
+.navbar--auth .navbar__logo {
+  pointer-events: auto;
 }
 
 .auth-card {
-  background: rgba(20, 20, 25, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), var(--shadow-glow);
-  padding: var(--space-8);
+  background: rgba(13, 13, 18, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(129, 140, 248, 0.15);
+  padding: var(--space-10);
   width: 100%;
-  max-width: 440px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease;
+  max-width: 480px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(129, 140, 248, 0.05), transparent 70%);
+  pointer-events: none;
 }
 
 .auth-card:hover {
@@ -46,7 +77,7 @@
 }
 
 .form-group {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .form-group label {
@@ -63,19 +94,25 @@
   width: 100%;
   padding: 0.875rem 1rem;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
   font-size: var(--text-base);
   color: var(--color-text);
   font-family: inherit;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-group input:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .form-group input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(129, 140, 248, 0.05);
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+  transform: translateY(-1px);
 }
 
 .form-group input::placeholder {
@@ -124,37 +161,53 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: var(--space-6) 0;
-  color: var(--color-text-muted);
+  margin: var(--space-12) 0;
+  color: rgba(255, 255, 255, 0.3);
   font-size: var(--text-sm);
+  font-weight: 500;
+  text-transform: lowercase;
+  letter-spacing: 1px;
 }
 
 .auth-divider::before,
 .auth-divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid var(--color-border);
+  height: 1px;
+  background: linear-gradient(to var(--dir, right), rgba(255, 255, 255, 0.1), transparent);
 }
 
-.auth-divider::before { margin-right: var(--space-4); }
-.auth-divider::after { margin-left: var(--space-4); }
+.auth-divider::before { 
+  margin-right: var(--space-4); 
+  --dir: left;
+}
+.auth-divider::after { 
+  margin-left: var(--space-4); 
+  --dir: right;
+}
 
 .btn-google {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   gap: var(--space-3);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.04) !important;
   color: var(--color-text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem;
-  font-weight: 500;
-  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 1rem !important;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: all 0.3s;
+  width: 100% !important;
+  margin: 0 auto var(--space-4) auto !important;
+  box-sizing: border-box;
 }
 
 .btn-google:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .auth-switch {
