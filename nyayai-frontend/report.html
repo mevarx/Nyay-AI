@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Report — NyayAI</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/report.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background-color: var(--color-bg)">
+
+  <nav class="navbar animate-on-scroll">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+      </a>
+      <div class="navbar__actions" style="display:flex">
+        <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container report-main animate-on-scroll">
+    
+    <!-- Sticky top bar -->
+    <div class="report-topbar animate-on-scroll">
+      <div>
+        <h1 id="report-filename" style="font-size: var(--text-2xl); color: var(--color-primary);">Loading Report...</h1>
+        <span id="report-date" class="text-muted"></span>
+      </div>
+      <div class="report-topbar__actions">
+        <button onclick="window.print()" class="btn-secondary">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Download PDF
+        </button>
+        <a href="upload.html" class="btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> New Audit
+        </a>
+      </div>
+    </div>
+
+    <!-- Section A — Verdict Banner -->
+    <section class="verdict-banner card animate-on-scroll" id="verdict-banner" style="transition-delay: 100ms;">
+      <div class="verdict-banner__inner">
+        <div class="verdict-banner__score">
+          <div style="position: relative; width: 150px; height: 75px;">
+             <!-- Half Doughnut Chart used as Gauge -->
+            <canvas id="biasGauge"></canvas>
+            <div class="verdict-banner__label" id="verdict-label">...</div>
+          </div>
+        </div>
+        <div class="verdict-banner__summary">
+          <h2 style="margin-bottom: var(--space-2);">Executive Summary</h2>
+          <div class="spinner" id="summary-spinner"></div>
+          <p id="executive-summary-text" style="font-size: var(--text-base); color: var(--color-text); line-height: 1.6;">Generating report narrative...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section B — The Story -->
+    <section class="report-story card animate-on-scroll" style="transition-delay: 200ms;">
+      <h2>What Your Data Is Saying</h2>
+      <div class="spinner" id="story-spinner"></div>
+      <div id="story-text" class="story-content text-muted"></div>
+    </section>
+
+    <!-- Section C — Breakdown Cards -->
+    <section class="findings-section animate-on-scroll">
+      <h2 style="margin-bottom: var(--space-6); color: var(--color-primary);">Findings by Column</h2>
+      <div class="findings-grid" id="findings-grid">
+        <!-- Cards injected by report.js -->
+      </div>
+    </section>
+
+    <!-- Section D — Fix Recommendations -->
+    <section class="fixes-section card animate-on-scroll">
+      <h2>How to Fix This</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-6);">Select interventions to simulate their impact on your dataset fairness.</p>
+      <div id="fixes-list" class="fixes-list">
+        <!-- Fix items injected by report.js -->
+      </div>
+      <button class="btn-primary btn-large" style="margin-top: var(--space-6);" id="applyFixesBtn" onclick="applyFixes()" disabled>
+        Apply Selected Fixes
+      </button>
+    </section>
+
+    <!-- Section E — Download -->
+    <section class="download-section card animate-on-scroll" style="text-align: center;">
+      <h2 style="margin-bottom: var(--space-4);">Download & Share</h2>
+      <div class="download-buttons" style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+        <button onclick="window.print()" class="btn-secondary">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M14 2H6a2 2 0 0 0-2 2v16h16V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> 
+          Download Audit Report (PDF)
+        </button>
+        <a id="debiased-download-link" href="#" class="btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download Debiased Dataset
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/cache.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/gemini.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>

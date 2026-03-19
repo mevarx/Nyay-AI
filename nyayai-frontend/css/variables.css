@@ -1,0 +1,57 @@
+:root {
+  /* Colors - Absolute Black Theme */
+  --color-primary: #818cf8;        /* Neon Indigo */
+  --color-accent: #f59e0b;         /* Neon Amber */
+  --color-success: #10b981;        /* Emerald */
+  --color-warning: #f59e0b;        /* Amber */
+  --color-danger: #ef4444;         /* Red */
+  --color-bg: #000000;             /* Absolute Black */
+  --color-surface: rgba(20, 20, 25, 0.6); /* Glassmorphism base */
+  --color-surface-hover: rgba(40, 40, 50, 0.8);
+  --color-text: #f9fafb;           /* High contrast white */
+  --color-text-muted: #9ca3af;     /* Gray */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-primary-light: rgba(129, 140, 248, 0.15);
+
+  /* Typography */
+  --font-main: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Layout */
+  --container-max: 1200px;
+  --sidebar-width: 240px;
+  --navbar-height: 64px;
+
+  /* Borders */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows - Adjusted for Dark Mode */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px rgba(129, 140, 248, 0.3);
+}

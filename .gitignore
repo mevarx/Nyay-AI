@@ -1,0 +1,28 @@
+# Virtual Environments
+venv/
+env/
+.venv/
+.env
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node/Frontend
+node_modules/
+.npm/
+
+# IDE files
+.vscode/
+.idea/
+
+# Backend caching & uploads
+nyayai-backend/cache/
+nyayai-backend/uploads/
+!nyayai-backend/cache/.gitkeep
+!nyayai-backend/uploads/.gitkeep
+
+# macOS
+.DS_Store

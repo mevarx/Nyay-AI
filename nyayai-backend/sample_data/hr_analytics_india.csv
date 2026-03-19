@@ -1,0 +1,6 @@
+employee_id,gender,department,caste_category,performance_score,is_promoted
+E001,Female,IT,General,4.5,1
+E002,Male,Sales,OBC,3.8,0
+E003,Female,Sales,SC/ST,4.2,0
+E004,Male,HR,General,4.8,1
+E005,Male,IT,OBC,3.5,0

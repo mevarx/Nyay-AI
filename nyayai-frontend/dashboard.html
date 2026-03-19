@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — NyayAI</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body style="background-color: var(--color-bg)">
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <a href="index.html" class="logo-nyay" style="text-decoration: none;">Nyay<span class="logo-ai">AI</span></a>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="dashboard.html" class="nav-item active">
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg> Dashboard
+        </a>
+        <a href="upload.html" class="nav-item">
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> New Audit
+        </a>
+        <a href="learn.html" class="nav-item">
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> Learn Hub
+        </a>
+      </nav>
+      <div class="sidebar__bottom">
+        <div class="user-profile">
+          <div class="user-avatar" style="color: black;">NA</div>
+          <div class="user-info">
+            <div class="user-name">NyayAI User</div>
+            <div class="user-org">Acme Corp</div>
+          </div>
+        </div>
+        <a href="login.html" class="nav-item text-danger" style="margin-top: var(--space-4); color: var(--color-danger);">
+          <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main animate-on-scroll">
+      <header class="dashboard-header animate-on-scroll">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <h1 style="font-size: var(--text-2xl); color: var(--color-primary);">Overview</h1>
+        <a href="upload.html" class="btn-primary">New Audit</a>
+      </header>
+
+      <div class="dashboard-content">
+        <!-- Stats Row -->
+        <div class="stats-grid">
+          <div class="stat-card animate-on-scroll">
+            <div class="stat-title">Total Audits</div>
+            <div class="stat-value">3</div>
+            <div class="stat-trend trend-up">
+               <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor;"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg> 1 this month
+            </div>
+          </div>
+          <div class="stat-card animate-on-scroll" style="transition-delay: 100ms;">
+            <div class="stat-title">Critical Bias Flags</div>
+            <div class="stat-value text-danger" style="color: var(--color-danger);">1</div>
+            <div class="stat-trend trend-down" style="color: var(--color-danger);">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Needs Attention
+            </div>
+          </div>
+          <div class="stat-card animate-on-scroll" style="transition-delay: 200ms;">
+            <div class="stat-title">Data Points Analyzed</div>
+            <div class="stat-value">124.5k</div>
+            <div class="stat-trend">Across datasets</div>
+          </div>
+        </div>
+
+        <!-- Recent Audits Table -->
+        <div class="card animate-on-scroll" style="margin-top: var(--space-8); transition-delay: 300ms;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+            <h2 style="font-size: var(--text-xl);">Recent Audits</h2>
+            <a href="#" class="btn-secondary" style="padding: var(--space-2) var(--space-4); font-size: var(--text-sm);">View All</a>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Dataset Name</th>
+                  <th>Date</th>
+                  <th>Outcome Column</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-audits-body">
+                <!-- Hardcoded for demo -->
+                <tr>
+                  <td>
+                    <strong style="color: var(--color-primary);">hr_analytics_india_2026.csv</strong>
+                    <div class="text-muted" style="font-size: var(--text-xs);">54,000 rows</div>
+                  </td>
+                  <td>Mar 15, 2026</td>
+                  <td>is_promoted</td>
+                  <td><span class="badge badge-high">High Bias</span></td>
+                  <td><a href="report.html?audit_id=demo_audit_123" class="btn-text">View Report →</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong style="color: var(--color-primary);">loan_approvals_q1.csv</strong>
+                    <div class="text-muted" style="font-size: var(--text-xs);">12,500 rows</div>
+                  </td>
+                  <td>Mar 02, 2026</td>
+                  <td>loan_status</td>
+                  <td><span class="badge badge-low">Fair</span></td>
+                  <td><a href="report.html?audit_id=demo_audit_456" class="btn-text">View Report →</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>

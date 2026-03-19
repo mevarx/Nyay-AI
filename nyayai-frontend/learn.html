@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Hub — NyayAI</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body style="background-color: var(--color-bg)">
+
+  <!-- Navbar -->
+  <nav class="navbar animate-on-scroll">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+      </a>
+      <ul class="navbar__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="learn.html" style="color: var(--color-primary); font-weight: 700;">Learn More</a></li>
+      </ul>
+      <div class="navbar__actions">
+        <a href="dashboard.html" class="btn-primary">Go to App</a>
+      </div>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Menu">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+    
+    <!-- Mobile drawer -->
+    <div class="navbar__mobile-drawer" id="mobileDrawer">
+      <div class="drawer-header">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+        <button id="closeDrawerBtn">&times;</button>
+      </div>
+      <ul class="drawer-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="learn.html">Learn More</a></li>
+        <li class="drawer-actions">
+          <a href="dashboard.html" class="btn-primary btn-full">Go to App</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Header -->
+    <section class="learn-header animate-on-scroll" style="background: transparent;">
+      <div class="container" style="max-width: 800px; text-align: center;">
+        <h1 class="section-title">Understanding Algorithmic Bias</h1>
+        <p class="section-subtitle">A comprehensive guide to why fair AI matters in India, and how you can achieve it.</p>
+      </div>
+    </section>
+
+    <!-- Content Sections -->
+    <section class="learn-content container" style="max-width: 800px;">
+      
+      <div class="learn-section card animate-on-scroll">
+        <h2>What is Algorithmic Bias?</h2>
+        <p>Algorithmic bias occurs when a machine learning model or computer system behaves in ways that reflect unacknowledged prejudices, systematically disadvantaging certain groups over others. This is rarely intentional; instead, it is a byproduct of how models learn.</p>
+        <p>AI models learn by finding patterns in historical data. If historical data contains biases (for example, if previous managers preferred male candidates for technical roles), the AI adopts that preference as a mathematical rule. The AI doesn't know what gender is—it just knows that the "male" attribute correlated with "hired" in the past.</p>
+        <div class="takeaway-box" style="background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--color-accent); color: var(--color-text);">
+          <strong>Key Takeaway:</strong> AI does not remove human bias. By default, it automates and scales it.
+        </div>
+      </div>
+
+      <div class="learn-section card animate-on-scroll" style="transition-delay: 100ms;">
+        <h2>Why India is Different</h2>
+        <p>Most existing fairness tools are built in the West, where bias metrics primarily focus on race, gender, and age. But India's demographic and social fabric is uniquely complex.</p>
+        <p>In India, discrimination often operates through intersecting proxies: caste identity can be inferred through last names, religion through food preferences or localities, and economic background through mother tongue or native state. An algorithm imported from Silicon Valley will completely miss these localized forms of bias unless specifically designed to look for them.</p>
+        <div class="takeaway-box" style="background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--color-accent); color: var(--color-text);">
+          <strong>Key Takeaway:</strong> You cannot fix Indian bias with Western metrics. We must audit for caste, religion, region, and linguistic heritage.
+        </div>
+      </div>
+
+      <div class="learn-section card animate-on-scroll" style="transition-delay: 200ms;">
+        <h2>How Bias Enters Your Data</h2>
+        <p>Bias doesn't just magically appear in the algorithm. It sneaks in through three main doors: <em style="color: var(--color-primary)">historical bias</em> (world is unfair), <em style="color: var(--color-primary)">representation bias</em> (dataset is unbalanced), and <em style="color: var(--color-primary)">measurement bias</em> (asking the wrong questions).</p>
+        <p>For example, if you collect loan default data but only 5% of the data comes from rural regions, the model won't have enough data to accurately predict rural repayment. Consequently, it defaults to rejecting rural loans because uncertainty feels "risky" to an algorithm.</p>
+        <div class="takeaway-box" style="background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--color-accent); color: var(--color-text);">
+          <strong>Key Takeaway:</strong> Bias usually stems from flawed data collection, not flawed math. Fix the data, and you fix the model.
+        </div>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="learn-cta animate-on-scroll">
+        <h2 style="margin-bottom: var(--space-4);">Ready to audit your model?</h2>
+        <a href="upload.html" class="btn-primary btn-large">Start a Free Audit</a>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="footer animate-on-scroll" style="background-color: transparent;">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+        </div>
+        <p>India's first AI-powered bias audit platform.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="upload.html">Upload Dataset</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 NyayAI. Built with ❤️ in India.</p>
+    </div>
+  </footer>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>

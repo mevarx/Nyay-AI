@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="none"/>
+  <!-- Base Scale -->
+  <path d="M 200 40 L 200 250 M 150 250 L 250 250 M 100 80 L 300 80" stroke="#1A237E" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Left Pan -->
+  <path d="M 100 80 L 80 160 L 120 160 Z" fill="none" stroke="#FF6F00" stroke-width="4"/>
+  <path d="M 80 160 Q 100 180 120 160" fill="none" stroke="#FF6F00" stroke-width="4"/>
+  <!-- Data points dropping into left pan -->
+  <circle cx="100" cy="140" r="10" fill="#2E7D32" opacity="0.8"/>
+  <circle cx="85" cy="150" r="8" fill="#F9A825" opacity="0.8"/>
+  
+  <!-- Right Pan -->
+  <path d="M 300 80 L 280 160 L 320 160 Z" fill="none" stroke="#FF6F00" stroke-width="4"/>
+  <path d="M 280 160 Q 300 180 320 160" fill="none" stroke="#FF6F00" stroke-width="4"/>
+  <!-- Data points dropping into right pan -->
+  <rect x="290" y="130" width="16" height="16" fill="#C62828" opacity="0.8" rx="4"/>
+  <circle cx="310" cy="150" r="12" fill="#2E7D32" opacity="0.8"/>
+  
+  <!-- AI Checkmark Center -->
+  <circle cx="200" cy="165" r="30" fill="#1A237E"/>
+  <path d="M 185 165 L 195 175 L 215 155" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

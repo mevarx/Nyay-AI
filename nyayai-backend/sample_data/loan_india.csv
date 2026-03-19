@@ -1,0 +1,6 @@
+applicant_id,annual_income,loan_amount,native_state,caste_category,loan_status
+L001,500000,1000000,Maharashtra,General,Approved
+L002,300000,500000,Bihar,OBC,Rejected
+L003,800000,2000000,Karnataka,General,Approved
+L004,250000,300000,UP,SC/ST,Rejected
+L005,1200000,5000000,Delhi,General,Approved

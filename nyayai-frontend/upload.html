@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Dataset — NyayAI</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/upload.css">
+</head>
+<body style="background-color: var(--color-bg)">
+
+  <nav class="navbar animate-on-scroll">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+      </a>
+      <div class="navbar__actions" style="display:flex">
+        <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container upload-main animate-on-scroll">
+    <div class="wizard-header">
+      <h1 class="section-title">New Bias Audit</h1>
+      <p class="section-subtitle">Securely upload your data to detect hidden bias.</p>
+    </div>
+
+    <!-- Wizard progress bar -->
+    <div class="wizard-progress">
+      <div class="wizard-step active" id="step-indicator-1">① Upload</div>
+      <div class="wizard-divider">→</div>
+      <div class="wizard-step" id="step-indicator-2">② Configure</div>
+      <div class="wizard-divider">→</div>
+      <div class="wizard-step" id="step-indicator-3">③ Run Audit</div>
+    </div>
+
+    <!-- Step 1 — Upload panel -->
+    <div id="step-1-panel" class="wizard-panel card">
+      <div id="error-banner" class="error-banner" style="display:none"></div>
+      
+      <div class="upload-zone" id="uploadZone" style="background-color: rgba(255,255,255,0.02)">
+        <div class="upload-zone__icon" style="color: var(--color-primary)">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+        </div>
+        <p class="upload-zone__primary">Drop your CSV file here</p>
+        <p class="upload-zone__secondary">or click to browse</p>
+        <p class="upload-zone__hint">.csv files only, max 50MB</p>
+        <input type="file" id="fileInput" accept=".csv" style="display:none">
+      </div>
+
+      <div id="file-selected" style="display:none" class="file-success-banner">
+        <div>
+          <span class="success-icon">✓</span>
+          <span id="file-name" style="font-weight: 600;"></span>
+          <span id="file-size" class="text-muted" style="margin-left: 10px; font-size: 0.9em;"></span>
+        </div>
+        <button id="removeFileBtn" class="btn-text">Remove</button>
+      </div>
+
+      <div class="sample-datasets">
+        <p class="text-muted">Don't have a dataset?</p>
+        <a href="assets/sample_data/hr_analytics_india.csv" download class="btn-secondary btn-sm">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Try Hiring Dataset
+        </a>
+        <a href="assets/sample_data/loan_india.csv" download class="btn-secondary btn-sm">
+          <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Try Loan Dataset
+        </a>
+      </div>
+
+      <div class="wizard-actions">
+        <button class="btn-primary" id="continueBtn" disabled onclick="goToStep2()">
+          Continue to Configure →
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2 — Configure panel -->
+    <div id="step-2-panel" class="wizard-panel card" style="display:none">
+      <div class="configure-layout">
+
+        <div class="configure-preview animate-on-scroll">
+          <h3 style="color: var(--color-primary);">Dataset Preview</h3>
+          <p class="text-muted">First 5 rows of your data</p>
+          <div id="preview-table-container" style="overflow-x: auto; margin-top: 1rem; border-radius: var(--radius-md);">
+            <!-- Table injected by upload.js after API response -->
+          </div>
+        </div>
+
+        <div class="configure-controls animate-on-scroll" style="transition-delay: 100ms;">
+          <h3 style="color: var(--color-primary);">Sensitive Columns</h3>
+          <p class="text-muted" style="font-size: 0.9em;">NyayAI detected these as sensitive. Toggle to confirm:</p>
+          <div id="sensitive-columns-list" class="toggle-list">
+            <!-- Toggle switches injected by upload.js -->
+          </div>
+
+          <div class="configure-add-column">
+            <label style="font-size: 0.9em;">Add a column manually:</label>
+            <div class="flex-row">
+              <select id="add-column-dropdown" class="form-select flex-1">
+                <!-- Options from column list -->
+              </select>
+              <button onclick="addColumn()" class="btn-secondary" style="height: 42px;">Add</button>
+            </div>
+          </div>
+
+          <hr style="margin: var(--space-6) 0; border: none; border-top: 1px solid var(--color-border);">
+
+          <h3 style="color: var(--color-primary);">Outcome Column</h3>
+          <p class="text-muted" style="font-size: 0.9em; margin-bottom: 0.5rem;">What is the model trying to predict?</p>
+          <select id="outcome-column-select" class="form-select w-full">
+            <!-- Options injected by upload.js -->
+          </select>
+
+          <hr style="margin: var(--space-6) 0; border: none; border-top: 1px solid var(--color-border);">
+
+          <h3 style="color: var(--color-primary);">Analysis Depth</h3>
+          <div class="radio-group" style="margin-top: 0.5rem;">
+            <label class="radio-label">
+              <input type="radio" name="depth" value="quick"> 
+              <span>Quick Scan (2 metrics)</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="depth" value="full" checked>
+              <span>Full Audit (5 metrics) — Recommended</span>
+            </label>
+          </div>
+
+          <button class="btn-primary btn-full btn-large" style="margin-top: var(--space-8);" id="runAuditBtn" onclick="runAudit()">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 20px; height: 20px; margin-right: 8px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            Run Bias Audit
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/upload.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+</html>

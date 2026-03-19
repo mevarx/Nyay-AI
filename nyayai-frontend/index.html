@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyayAI — India's First AI-Powered Bias Audit Tool</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/rainbow-button.css">
+  <link rel="stylesheet" href="css/glowing-effect.css?v=2">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar animate-on-scroll">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+        <small class="logo-tagline">Justice through Data</small>
+      </a>
+
+      <ul class="navbar__links">
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about-us">About Us</a></li>
+        <li><a href="learn.html">Learn More</a></li>
+      </ul>
+
+      <div class="navbar__actions">
+        <a href="login.html" class="btn-secondary">Log In</a>
+        <a href="signup.html" class="btn-primary">Get Started Free</a>
+      </div>
+
+      <button class="navbar__hamburger" id="hamburgerBtn">☰</button>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar__mobile-drawer" id="mobileDrawer">
+      <div class="drawer-header">
+        <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+        <button id="closeDrawerBtn">&times;</button>
+      </div>
+      <ul class="drawer-links">
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#about-us">About Us</a></li>
+        <li><a href="learn.html">Learn More</a></li>
+        <li class="drawer-actions">
+          <a href="login.html" class="btn-secondary btn-full">Log In</a>
+          <a href="signup.html" class="btn-primary btn-full" style="margin-top: 1rem;">Get Started Free</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero animate-on-scroll" id="hero">
+    <div class="container hero__inner">
+      <div class="hero__left">
+        <div class="hero__tag">
+          <svg class="icon" viewBox="0 0 24 24" style="stroke: currentColor; fill: none; width: 16px; height: 16px; margin-right: 8px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Built for India
+        </div>
+        <h1 class="hero__headline">Is Your AI Treating Everyone Fairly?</h1>
+        <p class="hero__subtext">
+          NyayAI audits your hiring, lending, and admissions datasets for hidden
+          bias across caste, gender, region, and religion — and explains it in
+          plain language.
+        </p>
+        <div class="hero__cta-group">
+          <a href="signup.html" class="btn-rainbow btn-large">Audit Your Dataset →</a>
+          <a href="#how-it-works" class="btn-secondary btn-large">See How It Works</a>
+        </div>
+        <div class="hero__trust-badges">
+          <span>✓ Free for students & NGOs</span>
+          <span>✓ Indian datasets supported</span>
+          <span>✓ No ML expertise needed</span>
+        </div>
+      </div>
+      <div class="hero__right">
+        <div class="hero-mockup card">
+          <div class="mockup-header" style="color: var(--color-primary);">Bias Audit Overview</div>
+          <div class="mockup-body">
+            <div class="mockup-line"></div>
+            <div class="mockup-line short"></div>
+            <div class="mockup-chart" style="background: linear-gradient(180deg, rgba(245, 158, 11, 0.2) 0%, transparent 100%); border-bottom: 2px solid var(--color-accent);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem Statement Section -->
+  <section class="problem animate-on-scroll" id="problem" style="background-color: transparent;">
+    <div class="container">
+      <h2 class="section-title text-light">Bias is Already in Your Data. You Just Can't See It.</h2>
+      
+      <div class="problem__cards">
+        <div class="problem__card card animate-on-scroll">
+          <div class="problem__icon" style="color: var(--color-accent); margin-bottom: 1rem;">
+             <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+          </div>
+          <h3 style="color: var(--color-primary)">Hiring</h3>
+          <p>An AI trained on 10 years of hiring data learned to prefer candidates
+          from metros — silently penalizing rural applicants with equal qualifications.</p>
+        </div>
+
+        <div class="problem__card card animate-on-scroll" style="transition-delay: 100ms;">
+          <div class="problem__icon" style="color: var(--color-accent); margin-bottom: 1rem;">
+            <svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+          </div>
+          <h3 style="color: var(--color-primary)">Lending</h3>
+          <p>Loan approval models in India have been found to correlate repayment
+          prediction with caste proxies like last names and home districts.</p>
+        </div>
+
+        <div class="problem__card card animate-on-scroll" style="transition-delay: 200ms;">
+          <div class="problem__icon" style="color: var(--color-accent); margin-bottom: 1rem;">
+            <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M18 10v9"/><path d="m22 10-10-4-10 4 10 4 10-4z"/><polygon points="6 12 12 14.4 18 12 18 19 12 21 6 19 6 12"/></svg>
+          </div>
+          <h3 style="color: var(--color-primary)">Admissions</h3>
+          <p>College admission algorithms trained on historical data perpetuate
+          legacy advantages, disadvantaging first-generation students from tier-2 cities.</p>
+        </div>
+      </div>
+      <p class="problem__footer">These aren't hypotheticals. They're happening right now in India.</p>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works animate-on-scroll" id="how-it-works" style="background-color: transparent;">
+    <div class="container">
+      <h2 class="section-title">Three Steps to a Fair Model</h2>
+
+      <div class="steps">
+        <div class="step card animate-on-scroll">
+          <div class="step__header">
+            <span class="step__number">01</span>
+            <div class="step__icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+            </div>
+          </div>
+          <h3>Upload Your Dataset</h3>
+          <p>Upload any CSV file — hiring data, loan records, admissions data. Any format.</p>
+        </div>
+        <div class="step__arrow">→</div>
+        <div class="step card animate-on-scroll" style="transition-delay: 100ms;">
+          <div class="step__header">
+            <span class="step__number">02</span>
+            <div class="step__icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+          </div>
+          <h3>NyayAI Audits It</h3>
+          <p>Our AI detects bias across caste, gender, region, language, and religion.</p>
+        </div>
+        <div class="step__arrow">→</div>
+        <div class="step card animate-on-scroll" style="transition-delay: 200ms;">
+          <div class="step__header">
+            <span class="step__number">03</span>
+            <div class="step__icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+            </div>
+          </div>
+          <h3>Get Your Report</h3>
+          <p>Plain English report with specific fixes. No statistics degree required.</p>
+        </div>
+      </div>
+
+      <p class="steps__note">→ Takes less than 60 seconds</p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features animate-on-scroll" id="features" style="background-color: transparent;">
+    <div class="container">
+      <h2 class="section-title">Everything You Need to Audit Fairly</h2>
+
+      <div class="features__grid">
+        <div class="feature-card card animate-on-scroll">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Indian Context Aware</h3>
+          <p>Detects caste, religion, native state, mother tongue, and region —
+          not just Western categories like race.</p>
+        </div>
+
+        <div class="feature-card card animate-on-scroll" style="transition-delay: 50ms;">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+          </div>
+          <h3>Powered by AI</h3>
+          <p>Deep reasoning engine identifies non-obvious bias patterns and
+          proxy variables that simpler tools miss.</p>
+        </div>
+
+        <div class="feature-card card animate-on-scroll" style="transition-delay: 100ms;">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+          </div>
+          <h3>Plain Language Reports</h3>
+          <p>Gemini converts technical bias metrics into readable audit narratives.
+          No statistics knowledge needed.</p>
+        </div>
+
+        <div class="feature-card card animate-on-scroll" style="transition-delay: 150ms;">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3>Actionable Fix Suggestions</h3>
+          <p>Don't just find bias — fix it. NyayAI suggests specific interventions
+          with expected improvement scores.</p>
+        </div>
+
+        <div class="feature-card card animate-on-scroll" style="transition-delay: 200ms;">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          </div>
+          <h3>Visual Bias Dashboard</h3>
+          <p>Interactive charts show exactly which groups are being treated
+          differently and by how much.</p>
+        </div>
+
+        <div class="feature-card card animate-on-scroll" style="transition-delay: 250ms;">
+          <div class="feature-card__icon" style="color: var(--color-accent);">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          </div>
+          <h3>Downloadable Audit PDF</h3>
+          <p>Export a professional audit report to share with your team,
+          board, or compliance officer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="about-us animate-on-scroll" id="about-us" style="background-color: transparent;">
+    <div class="container about-us__inner">
+      <div class="about-us__text">
+        <h2 class="section-title" style="text-align: left;">Why We Built NyayAI</h2>
+        <p>We are computer science students who noticed that while bias detection
+        tools exist globally, none of them were built for India's unique social fabric.</p>
+        <p>India has one of the world's most complex demographic landscapes — caste,
+        religion, region, language, and class intersect in ways that Western fairness
+        tools simply don't account for.</p>
+        <p>NyayAI was built to change that. We believe every organization in India
+        deserves access to tools that help them make fair decisions.</p>
+        <div class="about-us__mission card" style="border-left: 4px solid var(--color-primary);">
+          Our mission: Make fair AI accessible to every Indian organization,
+          regardless of technical expertise.
+        </div>
+      </div>
+
+      <div class="about-us__team">
+        <div class="team-card card">
+          <div class="team-card__avatar" style="color: black;">NA</div>
+          <h4 style="color: var(--color-primary);">NyayAI Team</h4>
+          <p>Full Stack & ML</p>
+          <p>Developers & Researchers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learn More Teaser -->
+  <section class="learn-teaser animate-on-scroll" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%);">
+    <div class="container learn-teaser__inner card" style="background-color: transparent; border: none; box-shadow: none;">
+      <h2>New to AI Bias? Start Here.</h2>
+      <p style="color: rgba(255,255,255,0.8);">We've built a free learning resource explaining how algorithmic bias works,
+      why it matters in India, and how to fix it — no technical background needed.</p>
+      <br>
+      <a href="learn.html" class="btn-primary btn-large">Explore the Learn Hub →</a>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq animate-on-scroll" id="faq" style="background-color: transparent;">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+
+      <div class="faq__list card">
+        <div class="faq__item" style="border-bottom: 1px solid var(--color-border);">
+          <button class="faq__question">
+            What kind of datasets can I upload?
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            Any CSV file with at least 50 rows and 3 columns. Works with hiring data,
+            loan records, college admissions data, and more.
+          </div>
+        </div>
+        <div class="faq__item" style="border-bottom: 1px solid var(--color-border);">
+          <button class="faq__question">
+            Do I need to know machine learning?
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            Not at all. NyayAI handles all the complicated statistics and provides you with a plain English explanation of your data's fairness.
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question">
+            Does NyayAI send my data to the cloud?
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            We prioritize data privacy. We only analyze your CSV structure and aggregated statistics; we do not retain the raw dataset itself.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer animate-on-scroll" style="background-color: transparent;">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+        </div>
+        <p>India's first AI-powered bias audit platform for hiring, lending,
+        and admissions.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="upload.html">Upload Dataset</a></li>
+          <li><a href="#">View Sample Report</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="learn.html">Learn About Bias</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about-us">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 NyayAI. Built with ❤️ in India.</p>
+    </div>
+  </footer>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/learn.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/glowing-effect.js"></script>
+</body>
+</html>
