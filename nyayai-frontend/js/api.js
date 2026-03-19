@@ -42,7 +42,7 @@ const API = {
     });
   },
 
-  async analyzeDataset(sessionId, sensitiveColumns, outcomeColumn, depth = "full") {
+  async analyzeDataset(sessionId, sensitiveColumns, outcomeColumn, depth = "full", fileName = "dataset.csv") {
     const headers = await this._getAuthHeaders();
     return this._fetchJSON("/analyze", {
       method: "POST",
@@ -51,7 +51,8 @@ const API = {
         session_id: sessionId,
         sensitive_columns: sensitiveColumns,
         outcome_column: outcomeColumn,
-        analysis_depth: depth
+        analysis_depth: depth,
+        file_name: fileName
       })
     });
   },

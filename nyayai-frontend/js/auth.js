@@ -51,6 +51,19 @@ async function getCurrentUser() {
   return user
 }
 
+// ── Populate User Info ──────────────────────────────────────────────
+async function populateUserInfo() {
+  const user = await getCurrentUser();
+  if (!user) return;
+  const nameEl = document.querySelector('.user-name');
+  const avatarEl = document.querySelector('.user-avatar');
+  if (nameEl) nameEl.textContent = user.user_metadata?.full_name || user.email;
+  if (avatarEl) {
+    const initials = (user.user_metadata?.full_name || user.email || 'U').substring(0, 2).toUpperCase();
+    avatarEl.textContent = initials;
+  }
+}
+
 // ── Get Session Token (JWT) ─────────────────────────────────────────
 async function getSessionToken() {
   const { data: { session } } = await supabase.auth.getSession()

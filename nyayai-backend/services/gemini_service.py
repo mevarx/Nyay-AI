@@ -2,21 +2,18 @@ import json
 import re
 import google.generativeai as genai
 from config import (
-    GOOGLE_API_KEY,
-    GEMINI_MODEL_DEV,
-    GEMINI_MODEL_PROD,
+    GEMINI_API_KEY,
+    GEMINI_MODEL,
     GEMINI_MAX_TOKENS_UPLOAD,
     GEMINI_MAX_TOKENS_ANALYZE,
 )
 from utils.cache import load_from_cache, save_to_cache
 
 
-# DEVELOPMENT FLAG: Set to False when switching to production
-USE_DEV_MODEL = True
-MODEL_NAME = GEMINI_MODEL_DEV if USE_DEV_MODEL else GEMINI_MODEL_PROD
+MODEL_NAME = GEMINI_MODEL
 
 # Configure the Gemini client
-genai.configure(api_key=GOOGLE_API_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
 
 
 class GeminiParseError(Exception):

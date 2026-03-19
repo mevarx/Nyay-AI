@@ -2,7 +2,7 @@ from flask import Blueprint, send_file
 from utils.cache import load_from_cache
 from utils.response_builder import success_response, error_response
 import os
-from services.claude_service import generate_narrative
+from services.gemini_service import generate_narrative
 from config import UPLOAD_FOLDER
 
 report_bp = Blueprint("report", __name__)
@@ -14,7 +14,7 @@ def get_report(audit_id):
     Loads audit result from cache by audit_id.
     Returns the same JSON structure as /analyze response.
     """
-    result = load_from_cache(f"audit_{audit_id}")
+    result = load_from_cache(f"report_{audit_id}")
     if not result:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
 
@@ -27,7 +27,7 @@ def download_debiased(audit_id):
     Streams the debiased CSV file for download.
     Looks up session_id from audit cache, then finds the debiased file.
     """
-    audit = load_from_cache(f"audit_{audit_id}")
+    audit = load_from_cache(f"report_{audit_id}")
     if not audit:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
 
@@ -55,7 +55,7 @@ def get_report_narrative(audit_id):
     Generates the human-readable narrative story for the audit report safely
     from the backend to protect the API key.
     """
-    audit = load_from_cache(f"audit_{audit_id}")
+    audit = load_from_cache(f"report_{audit_id}")
     if not audit:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
         

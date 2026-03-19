@@ -9,7 +9,7 @@ from services.metrics_service import (
     compute_nyayai_bias_score,
     get_severity_label,
 )
-from services.claude_service import analyze_bias
+from services.gemini_service import analyze_bias
 from utils.validators import validate_analyze_request
 from utils.response_builder import success_response, error_response
 from utils.auth_middleware import get_user_id_from_token
@@ -144,7 +144,7 @@ def analyze():
     }
 
     # Save full audit result to cache
-    save_to_cache(f"audit_{audit_id}", result)
+    save_to_cache(f"report_{audit_id}", result)
     save_to_cache(f"{session_id}_audit_id", {"audit_id": audit_id})
 
     # Save audit to Supabase DB (non-blocking — failure doesn't break response)

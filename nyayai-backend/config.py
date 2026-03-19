@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # API Keys
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = GOOGLE_API_KEY
 
 # Supabase
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -34,8 +35,7 @@ BIAS_HIGH_MAX = 80
 # Above 80 = CRITICAL
 
 # Gemini model config
-# USE FLASH DURING DEVELOPMENT, SWITCH TO PRO ONLY WHEN PROMPT IS FINALIZED
-GEMINI_MODEL_DEV = "gemini-1.5-flash"
-GEMINI_MODEL_PROD = "gemini-1.5-pro"
+USE_DEV_MODEL = os.getenv("USE_DEV_MODEL", "true").lower() == "true"
+GEMINI_MODEL = "gemini-1.5-flash" if USE_DEV_MODEL else "gemini-1.5-pro"
 GEMINI_MAX_TOKENS_UPLOAD = 2048
 GEMINI_MAX_TOKENS_ANALYZE = 4096

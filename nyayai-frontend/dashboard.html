@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <script src="js/config.js"></script>
+  <script src="js/cache.js"></script>
+  <script src="js/api.js"></script>
   <script type="module" src="js/auth.js"></script>
 </head>
 <body style="background-color: var(--color-bg)">
@@ -77,22 +79,22 @@
         <div class="stats-grid">
           <div class="stat-card animate-on-scroll">
             <div class="stat-title">Total Audits</div>
-            <div class="stat-value">3</div>
+            <div class="stat-value" id="stat-total-audits">-</div>
             <div class="stat-trend trend-up">
-               <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor;"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg> 1 this month
+               <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor;"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg> Lifetime
             </div>
           </div>
           <div class="stat-card animate-on-scroll" style="transition-delay: 100ms;">
             <div class="stat-title">Critical Bias Flags</div>
-            <div class="stat-value text-danger" style="color: var(--color-danger);">1</div>
+            <div class="stat-value text-danger" id="stat-critical-flags" style="color: var(--color-danger);">-</div>
             <div class="stat-trend trend-down" style="color: var(--color-danger);">
               <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Needs Attention
             </div>
           </div>
           <div class="stat-card animate-on-scroll" style="transition-delay: 200ms;">
-            <div class="stat-title">Data Points Analyzed</div>
-            <div class="stat-value">124.5k</div>
-            <div class="stat-trend">Across datasets</div>
+            <div class="stat-title">Unique Datasets</div>
+            <div class="stat-value" id="stat-files-analyzed">-</div>
+            <div class="stat-trend">Analyzed by NyayAI</div>
           </div>
         </div>
 
@@ -115,27 +117,7 @@
                 </tr>
               </thead>
               <tbody id="recent-audits-body">
-                <!-- Hardcoded for demo -->
-                <tr>
-                  <td>
-                    <strong style="color: var(--color-primary);">hr_analytics_india_2026.csv</strong>
-                    <div class="text-muted" style="font-size: var(--text-xs);">54,000 rows</div>
-                  </td>
-                  <td>Mar 15, 2026</td>
-                  <td>is_promoted</td>
-                  <td><span class="badge badge-high">High Bias</span></td>
-                  <td><a href="report.html?audit_id=demo_audit_123" class="btn-text">View Report →</a></td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong style="color: var(--color-primary);">loan_approvals_q1.csv</strong>
-                    <div class="text-muted" style="font-size: var(--text-xs);">12,500 rows</div>
-                  </td>
-                  <td>Mar 02, 2026</td>
-                  <td>loan_status</td>
-                  <td><span class="badge badge-low">Fair</span></td>
-                  <td><a href="report.html?audit_id=demo_audit_456" class="btn-text">View Report →</a></td>
-                </tr>
+                <!-- Javascript will populate this -->
               </tbody>
             </table>
           </div>

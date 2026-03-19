@@ -167,19 +167,21 @@ function renderFixSection(findings, narratives) {
     findings.forEach(finding => {
         if (!finding.fix_suggestions || finding.fix_suggestions.length === 0) return;
 
-        const fixText = narratives[finding.column] || "Pre-processing algorithm application recommended.";
+        const fixText = "Pre-processing algorithm application recommended.";
+        const difficulty = finding.fix_suggestions[0]?.difficulty || 'Medium';
+        const expectedScore = finding.fix_suggestions[0]?.expected_improvement_score || 'N/A';
 
         list.innerHTML += `
             <div class="fix-item">
-                <input type="checkbox" id="fix-${finding.column}" onchange="toggleApplyFixBtn()">
+                <input type="checkbox" id="fix-${finding.column}" data-column="${finding.column}" data-action="REMOVE" onchange="toggleApplyFixBtn()">
                 <div class="fix-item__content">
                     <div class="fix-item__header">
-                        <label for="fix-${finding.column}"><h4>Fix ${finding.column} bias</h4></label>
-                        <span class="badge badge-moderate">${finding.fix_suggestions[0].difficulty || 'Medium'}</span>
+                        <label for="fix-${finding.column}"><h4>Remove / Anonymize ${finding.column}</h4></label>
+                        <span class="badge badge-moderate">${difficulty}</span>
                     </div>
                     <p class="fix-item__explanation">${fixText}</p>
                     <div class="fix-item__stats">
-                        Expected Impact: +${finding.fix_suggestions[0].expected_improvement_score}% Fairness
+                        Expected Impact: +${expectedScore}% Fairness
                     </div>
                 </div>
             </div>
@@ -193,17 +195,44 @@ function toggleApplyFixBtn() {
     document.getElementById("applyFixesBtn").disabled = !checked;
 }
 
-function applyFixes() {
+async function applyFixes() {
     const btn = document.getElementById("applyFixesBtn");
     btn.textContent = "Applying Fixes...";
     btn.disabled = true;
     
-    setTimeout(() => {
-        alert("Fixes applied successfully. Processing debiased dataset via backend.");
+    // Gather checked fix actions
+    const checkboxes = document.querySelectorAll('#fixes-list input[type="checkbox"]:checked');
+    const fixActions = Array.from(checkboxes).map(cb => ({
+        column: cb.getAttribute("data-column"),
+        action_type: cb.getAttribute("data-action") || "REMOVE"
+    }));
+
+    if (fixActions.length === 0) {
+        alert("Please select at least one fix to apply.");
         btn.textContent = "Apply Selected Fixes";
         btn.disabled = false;
-        // Mock redirect to download or refresh report
-    }, 1500);
+        return;
+    }
+
+    try {
+        const sessionId = currentAuditData.session_id;
+        const auditId = currentAuditData.audit_id;
+        
+        const response = await API.fixDataset(sessionId, auditId, fixActions);
+        
+        // Show success, and trigger download
+        alert(`Fixes applied successfully! Bias score improved from ${response.before_score.toFixed(1)} to ${response.after_score.toFixed(1)}.`);
+        
+        // Force download by navigating to debiased download link
+        window.location.href = API.getDebiasedDownloadURL(auditId);
+        
+        btn.textContent = "Applied!";
+    } catch (err) {
+        console.error("Failed to apply fixes:", err);
+        alert(`Failed to apply fixes: ${err.message}`);
+        btn.textContent = "Apply Selected Fixes";
+        btn.disabled = false;
+    }
 }
 
 // Dummy data for when backend is not running

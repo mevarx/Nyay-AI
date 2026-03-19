@@ -16,12 +16,14 @@ def create_app():
     # Allow frontend to call backend (local dev + production)
     CORS(app, origins=[
         "http://localhost:3000",
+        "http://localhost:5500",
         "http://localhost:8000",
         "http://localhost:8001",
         "http://localhost:8002",
         "http://127.0.0.1:8000",
         "http://127.0.0.1:8001",
         "http://127.0.0.1:8002",
+        "https://nyayai.web.app",
         "https://your-firebase-domain.web.app",
     ])
 
@@ -39,7 +41,7 @@ def create_app():
     # Health check
     @app.route("/health")
     def health():
-        return {"status": "healthy", "version": "1.0.0"}
+        return {"status": "healthy", "version": "1.0.0", "ai": "gemini"}
 
     return app
 

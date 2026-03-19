@@ -7,7 +7,7 @@ from services.dataset_service import (
     get_column_profiles,
     get_preview_rows,
 )
-from services.claude_service import detect_sensitive_columns
+from services.gemini_service import detect_sensitive_columns
 from utils.validators import validate_file_upload
 from utils.response_builder import success_response, error_response
 from utils.auth_middleware import get_user_id_from_token
@@ -65,6 +65,7 @@ def upload():
     # Step 5: Return
     return success_response({
         "session_id": session_id,
+        "file_name": file.filename,
         "dataset_info": dataset_info,
         "preview": preview,
         "column_profiles": column_profiles,
