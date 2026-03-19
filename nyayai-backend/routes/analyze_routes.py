@@ -12,6 +12,8 @@ from services.metrics_service import (
 from services.claude_service import analyze_bias
 from utils.validators import validate_analyze_request
 from utils.response_builder import success_response, error_response
+from utils.auth_middleware import get_user_id_from_token
+from services.db_service import save_audit
 from utils.cache import save_to_cache
 import uuid
 from datetime import datetime, timezone
@@ -35,6 +37,11 @@ def analyze():
     9. Return complete audit JSON
     """
     data = request.get_json(silent=True)
+
+    # Auth check
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in to run an audit.", 401)
 
     # Step 1: Validate
     is_valid, err_code, err_msg = validate_analyze_request(data)
@@ -139,5 +146,16 @@ def analyze():
     # Save full audit result to cache
     save_to_cache(f"audit_{audit_id}", result)
     save_to_cache(f"{session_id}_audit_id", {"audit_id": audit_id})
+
+    # Save audit to Supabase DB (non-blocking — failure doesn't break response)
+    db_audit_id = save_audit(
+        user_id=user_id,
+        file_name=data.get("file_name", "unknown.csv"),
+        bias_score=overall_verdict.get("bias_score", bias_score),
+        severity=overall_verdict.get("label", severity_label),
+        audit_json=result
+    )
+    if db_audit_id:
+        result["db_audit_id"] = db_audit_id
 
     return success_response(result)

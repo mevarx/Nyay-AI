@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/auth.css">
+  <script src="js/config.js"></script>
+  <script type="module" src="js/auth.js"></script>
 </head>
 <body style="background-color: var(--color-bg)">
 
@@ -23,44 +25,71 @@
     <div class="auth-card card" style="width: 100%; max-width: 440px;">
       <h1 class="auth-card__title" style="text-align: center; color: var(--color-primary); margin-bottom: var(--space-2);">Create an Account</h1>
       <p style="text-align: center; color: var(--color-text-muted); margin-bottom: var(--space-6);">Start auditing your models for free.</p>
-      
-      <button class="btn-social btn-full" style="background-color: rgba(255,255,255,0.05); color: var(--color-text); border: 1px solid var(--color-border); padding: var(--space-3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: var(--space-6);">
-         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-         </svg>
-        Sign up with Google
-      </button>
 
-      <div class="auth-divider" style="display: flex; align-items: center; text-align: center; color: var(--color-text-muted); margin-bottom: var(--space-6);">
-        <hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);"><span style="padding: 0 10px;">or</span><hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);">
+      <!-- Signup Form — hidden after success -->
+      <div id="signup-form">
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label for="signup-name" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Full Name</label>
+          <input type="text" id="signup-name" required placeholder="Your full name" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label for="signup-email" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Email Address</label>
+          <input type="email" id="signup-email" required placeholder="you@college.edu" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label for="signup-password" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Password</label>
+          <div style="position: relative;">
+            <input type="password" id="signup-password" required placeholder="Min 6 characters" oninput="updatePasswordStrength(this.value)" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('signup-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">Show</button>
+          </div>
+          <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 8px; overflow: hidden;">
+            <div id="strength-fill" style="height: 100%; width: 0%; transition: all 0.3s;"></div>
+          </div>
+          <span id="strength-label" style="font-size: var(--text-xs); color: var(--color-text-muted);"></span>
+        </div>
+
+        <div class="form-group" style="margin-bottom: var(--space-4);">
+          <label for="signup-confirm" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Confirm Password</label>
+          <input type="password" id="signup-confirm" required placeholder="Repeat your password" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+        </div>
+
+        <label style="display: flex; align-items: center; gap: 8px; color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-4); cursor: pointer;">
+          <input type="checkbox" id="terms-checkbox" style="accent-color: var(--color-primary);">
+          I agree to the <a href="#" style="color: var(--color-primary);">Terms of Service</a> and <a href="#" style="color: var(--color-primary);">Privacy Policy</a>
+        </label>
+
+        <div id="signup-error-banner" class="error-banner" style="display:none"></div>
+
+        <button class="btn-primary btn-full btn-large" onclick="handleSignUp()" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span id="signup-btn-text">Create Account</span>
+          <span id="signup-spinner" class="spinner" style="display:none"></span>
+        </button>
+
+        <div class="auth-divider" style="display: flex; align-items: center; text-align: center; color: var(--color-text-muted); margin: var(--space-6) 0;">
+          <hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);"><span style="padding: 0 10px;">or</span><hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);">
+        </div>
+
+        <button class="btn-social btn-full" id="google-signup-btn" style="background-color: rgba(255,255,255,0.05); color: var(--color-text); border: 1px solid var(--color-border); padding: var(--space-3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+           </svg>
+          Sign up with Google
+        </button>
       </div>
 
-      <form id="signupForm" onsubmit="handleSignup(event)">
-        <div class="form-group" style="margin-bottom: var(--space-4);">
-          <label for="name" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Full Name</label>
-          <input type="text" id="name" required placeholder="Arjun Sharma" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
-        </div>
-        
-        <div class="form-group" style="margin-bottom: var(--space-4);">
-          <label for="email" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Work Email</label>
-          <input type="email" id="email" required placeholder="arjun@company.com" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
-        </div>
-
-        <div class="form-group" style="margin-bottom: var(--space-6);">
-          <label for="password" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Password</label>
-          <div class="password-input-wrapper" style="position: relative;">
-            <input type="password" id="password" required placeholder="Min 8 characters" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
-            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
-               <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary btn-full btn-large">Create Account →</button>
-      </form>
+      <!-- Success State — shown after signup -->
+      <div id="signup-success" class="card" style="display:none; text-align: center; padding: var(--space-8);">
+        <div style="font-size: 48px; margin-bottom: var(--space-4);">✅</div>
+        <h3 style="color: var(--color-primary); margin-bottom: var(--space-4);">Check your email!</h3>
+        <p style="color: var(--color-text-muted);">We sent a confirmation link to <strong id="confirmed-email" style="color: var(--color-text);"></strong>. Click it to activate your account.</p>
+        <p class="text-muted" style="margin-top: var(--space-4); font-size: var(--text-sm);">After confirming, come back here to log in.</p>
+        <a href="login.html" class="btn-primary btn-full" style="margin-top: var(--space-6);">Go to Login →</a>
+      </div>
 
       <p class="auth-redirect" style="text-align: center; margin-top: var(--space-6); color: var(--color-text-muted);">
         Already have an account? <a href="login.html" style="color: var(--color-primary); font-weight: 600;">Log in</a>
@@ -69,14 +98,79 @@
   </main>
 
   <script>
-    function togglePasswordVisibility(inputId) {
-      const input = document.getElementById(inputId);
-      input.type = input.type === 'password' ? 'text' : 'password';
+    // Wire Google button
+    document.getElementById('google-signup-btn').addEventListener('click', function() {
+      if (typeof signInWithGoogle === 'function') signInWithGoogle();
+      else alert('Auth module still loading. Please try again.');
+    });
+
+    async function handleSignUp() {
+      document.getElementById('signup-error-banner').style.display = 'none';
+
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const confirm = document.getElementById('signup-confirm').value;
+      const termsChecked = document.getElementById('terms-checkbox').checked;
+
+      if (!name || !email || !password || !confirm) { showSignupError('Please fill in all fields.'); return; }
+      if (password.length < 6) { showSignupError('Password must be at least 6 characters.'); return; }
+      if (password !== confirm) { showSignupError('Passwords do not match.'); return; }
+      if (!termsChecked) { showSignupError('Please agree to the Terms of Service.'); return; }
+
+      setSignupLoading(true);
+
+      if (typeof signUp !== 'function') {
+        showSignupError('Auth module not loaded yet. Please wait and try again.');
+        setSignupLoading(false);
+        return;
+      }
+
+      const result = await signUp(email, password, name);
+      setSignupLoading(false);
+
+      if (!result.success) { showSignupError(result.message); return; }
+
+      // Show success state
+      document.getElementById('signup-form').style.display = 'none';
+      document.getElementById('confirmed-email').textContent = email;
+      document.getElementById('signup-success').style.display = 'block';
     }
-    function handleSignup(e) {
-      e.preventDefault();
-      // Mock signup -> redirect to dashboard
-      window.location.href = 'dashboard.html';
+
+    function showSignupError(message) {
+      const banner = document.getElementById('signup-error-banner');
+      banner.textContent = message;
+      banner.style.display = 'block';
+    }
+
+    function setSignupLoading(isLoading) {
+      document.getElementById('signup-btn-text').style.display = isLoading ? 'none' : 'inline';
+      document.getElementById('signup-spinner').style.display = isLoading ? 'inline-block' : 'none';
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+      else { input.type = 'password'; btn.textContent = 'Show'; }
+    }
+
+    function updatePasswordStrength(value) {
+      const fill = document.getElementById('strength-fill');
+      const label = document.getElementById('strength-label');
+      let strength = 0;
+      if (value.length >= 6) strength++;
+      if (value.length >= 10) strength++;
+      if (/[A-Z]/.test(value)) strength++;
+      if (/[0-9]/.test(value)) strength++;
+      if (/[^A-Za-z0-9]/.test(value)) strength++;
+
+      const levels = ['', 'Too short', 'Weak', 'Fair', 'Strong', 'Very Strong'];
+      const colors = ['', '#C62828', '#FF6F00', '#F9A825', '#2E7D32', '#1B5E20'];
+      const widths = ['0%', '20%', '40%', '60%', '80%', '100%'];
+
+      fill.style.width = widths[strength];
+      fill.style.backgroundColor = colors[strength];
+      label.textContent = levels[strength];
     }
   </script>
   <script src="js/animations.js"></script>

@@ -10,6 +10,7 @@ from services.dataset_service import (
 from services.claude_service import detect_sensitive_columns
 from utils.validators import validate_file_upload
 from utils.response_builder import success_response, error_response
+from utils.auth_middleware import get_user_id_from_token
 
 upload_bp = Blueprint("upload", __name__)
 
@@ -26,6 +27,11 @@ def upload():
     5. Return session_id + preview + column classifications
     """
     file = request.files.get("file")
+
+    # Auth check — upload is protected
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in to upload a file.", 401)
 
     # Step 1: Validate
     is_valid, err_code, err_msg = validate_file_upload(file)

@@ -5,6 +5,7 @@ from routes.upload_routes import upload_bp
 from routes.analyze_routes import analyze_bp
 from routes.fix_routes import fix_bp
 from routes.report_routes import report_bp
+from routes.history_routes import history_bp
 import os
 
 
@@ -16,7 +17,11 @@ def create_app():
     CORS(app, origins=[
         "http://localhost:3000",
         "http://localhost:8000",
+        "http://localhost:8001",
+        "http://localhost:8002",
         "http://127.0.0.1:8000",
+        "http://127.0.0.1:8001",
+        "http://127.0.0.1:8002",
         "https://your-firebase-domain.web.app",
     ])
 
@@ -29,6 +34,7 @@ def create_app():
     app.register_blueprint(analyze_bp)
     app.register_blueprint(fix_bp)
     app.register_blueprint(report_bp)
+    app.register_blueprint(history_bp)
 
     # Health check
     @app.route("/health")

@@ -6,6 +6,11 @@ load_dotenv()
 # API Keys
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
+# Supabase
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
+SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
+
 # Flask
 FLASK_ENV = os.getenv("FLASK_ENV", "development")
 FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev_secret")

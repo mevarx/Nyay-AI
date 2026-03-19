@@ -6,8 +6,30 @@
   <title>Dashboard — NyayAI</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/dashboard.css">
+  <script src="js/config.js"></script>
+  <script type="module" src="js/auth.js"></script>
 </head>
 <body style="background-color: var(--color-bg)">
+  <!-- Auth guard -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
+    const { data: { user } } = await sb.auth.getUser()
+    if (!user) { window.location.href = 'login.html' }
+    else {
+      window.currentUser = user
+      // Update sidebar user info after DOM loads
+      window.addEventListener('DOMContentLoaded', () => {
+        const nameEl = document.querySelector('.user-name')
+        const avatarEl = document.querySelector('.user-avatar')
+        if (nameEl) nameEl.textContent = user.user_metadata?.full_name || user.email
+        if (avatarEl) {
+          const initials = (user.user_metadata?.full_name || user.email || 'U').substring(0, 2).toUpperCase()
+          avatarEl.textContent = initials
+        }
+      })
+    }
+  </script>
 
   <div class="dashboard-layout">
     <!-- Sidebar -->
@@ -34,7 +56,7 @@
             <div class="user-org">Acme Corp</div>
           </div>
         </div>
-        <a href="login.html" class="nav-item text-danger" style="margin-top: var(--space-4); color: var(--color-danger);">
+        <a href="#" class="nav-item text-danger" style="margin-top: var(--space-4); color: var(--color-danger);" onclick="if(typeof logout==='function') logout(); else window.location.href='login.html'">
           <svg class="icon nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout
         </a>
       </div>

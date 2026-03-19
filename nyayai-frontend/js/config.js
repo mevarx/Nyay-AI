@@ -5,6 +5,10 @@ const CONFIG = {
   // Backend API
   API_BASE_URL: "http://localhost:5000",  // Change to Railway URL before submission
 
+  // Supabase Auth
+  SUPABASE_URL: "YOUR_SUPABASE_URL",        // e.g. https://xxxxx.supabase.co
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+
   // Gemini API Note: Key is now securely stored in backend .env
   GEMINI_MODEL: "gemini-1.5-flash",
   GEMINI_MAX_TOKENS: 2048,

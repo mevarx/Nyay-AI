@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/auth.css">
+  <script src="js/config.js"></script>
+  <script type="module" src="js/auth.js"></script>
 </head>
 <body style="background-color: var(--color-bg)">
 
@@ -23,7 +25,8 @@
     <div class="auth-card card" style="width: 100%; max-width: 440px;">
       <h1 class="auth-card__title" style="text-align: center; color: var(--color-primary); margin-bottom: var(--space-6);">Welcome back</h1>
       
-      <button class="btn-social btn-full" style="background-color: rgba(255,255,255,0.05); color: var(--color-text); border: 1px solid var(--color-border); padding: var(--space-3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: var(--space-6);">
+      <!-- Google OAuth -->
+      <button class="btn-social btn-full" id="google-login-btn" style="background-color: rgba(255,255,255,0.05); color: var(--color-text); border: 1px solid var(--color-border); padding: var(--space-3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: var(--space-6); cursor: pointer;">
          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -37,26 +40,32 @@
         <hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);"><span style="padding: 0 10px;">or</span><hr style="flex-grow: 1; border: none; border-top: 1px solid var(--color-border);">
       </div>
 
+      <!-- Email/Password -->
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="form-group" style="margin-bottom: var(--space-4);">
-          <label for="email" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Work Email</label>
-          <input type="email" id="email" required placeholder="you@company.com" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+          <label for="login-email" style="display: block; margin-bottom: var(--space-2); color: var(--color-text-muted);">Email Address</label>
+          <input type="email" id="login-email" required placeholder="you@example.com" autocomplete="email" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
         </div>
         
-        <div class="form-group" style="margin-bottom: var(--space-6);">
+        <div class="form-group" style="margin-bottom: var(--space-4);">
           <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
-            <label for="password" style="color: var(--color-text-muted);">Password</label>
+            <label for="login-password" style="color: var(--color-text-muted);">Password</label>
             <a href="#" class="text-xs" style="color: var(--color-primary);">Forgot password?</a>
           </div>
           <div class="password-input-wrapper" style="position: relative;">
-            <input type="password" id="password" required placeholder="••••••••" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
-            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('password')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
-               <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password" style="width: 100%; padding: var(--space-3); background-color: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: white;">
+            <button type="button" class="btn-toggle-password" onclick="togglePasswordVisibility('login-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);">
+               Show
             </button>
           </div>
         </div>
 
-        <button type="submit" class="btn-primary btn-full btn-large">Log In →</button>
+        <div id="login-error-banner" class="error-banner" style="display:none"></div>
+
+        <button type="submit" class="btn-primary btn-full btn-large" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span id="login-btn-text">Log In →</span>
+          <span id="login-spinner" class="spinner" style="display:none"></span>
+        </button>
       </form>
 
       <p class="auth-redirect" style="text-align: center; margin-top: var(--space-6); color: var(--color-text-muted);">
@@ -66,14 +75,60 @@
   </main>
 
   <script>
-    function togglePasswordVisibility(inputId) {
-      const input = document.getElementById(inputId);
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-    function handleLogin(e) {
+    // Wire Google button
+    document.getElementById('google-login-btn').addEventListener('click', function() {
+      if (typeof signInWithGoogle === 'function') signInWithGoogle();
+      else alert('Auth module still loading. Please try again.');
+    });
+
+    async function handleLogin(e) {
       e.preventDefault();
-      // Mock login -> redirect to dashboard
-      window.location.href = 'dashboard.html';
+      document.getElementById('login-error-banner').style.display = 'none';
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showLoginError('Please fill in all fields.');
+        return;
+      }
+
+      setLoginLoading(true);
+
+      // Wait for auth module to be available
+      if (typeof signIn !== 'function') {
+        showLoginError('Auth module not loaded yet. Please wait a moment and try again.');
+        setLoginLoading(false);
+        return;
+      }
+
+      const result = await signIn(email, password);
+
+      if (!result.success) {
+        setLoginLoading(false);
+        showLoginError(result.message);
+        return;
+      }
+
+      // Success — redirect to upload
+      window.location.href = 'upload.html';
+    }
+
+    function showLoginError(message) {
+      const banner = document.getElementById('login-error-banner');
+      banner.textContent = message;
+      banner.style.display = 'block';
+    }
+
+    function setLoginLoading(isLoading) {
+      document.getElementById('login-btn-text').style.display = isLoading ? 'none' : 'inline';
+      document.getElementById('login-spinner').style.display = isLoading ? 'inline-block' : 'none';
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+      else { input.type = 'password'; btn.textContent = 'Show'; }
     }
   </script>
   <script src="js/animations.js"></script>

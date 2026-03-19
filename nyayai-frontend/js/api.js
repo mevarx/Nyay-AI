@@ -4,6 +4,18 @@
 
 const API = {
 
+  // Helper — gets Supabase session token and builds auth headers
+  async _getAuthHeaders(includeContentType = true) {
+    let token = null;
+    if (typeof getSessionToken === 'function') {
+      token = await getSessionToken();
+    }
+    const headers = {};
+    if (includeContentType) headers["Content-Type"] = "application/json";
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+  },
+
   async _fetchJSON(endpoint, options = {}) {
     const response = await fetch(`${CONFIG.API_BASE_URL}${endpoint}`, options);
     const text = await response.text();
@@ -20,18 +32,21 @@ const API = {
   },
 
   async uploadFile(file) {
+    const headers = await this._getAuthHeaders(false); // No Content-Type for FormData
     const formData = new FormData();
     formData.append("file", file);
     return this._fetchJSON("/upload", {
       method: "POST",
+      headers,
       body: formData
     });
   },
 
   async analyzeDataset(sessionId, sensitiveColumns, outcomeColumn, depth = "full") {
+    const headers = await this._getAuthHeaders();
     return this._fetchJSON("/analyze", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
         session_id: sessionId,
         sensitive_columns: sensitiveColumns,
@@ -42,9 +57,10 @@ const API = {
   },
 
   async fixDataset(sessionId, auditId, fixActions) {
+    const headers = await this._getAuthHeaders();
     return this._fetchJSON("/fix", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
         session_id: sessionId,
         audit_id: auditId,
@@ -54,7 +70,8 @@ const API = {
   },
 
   async getReport(auditId) {
-    return this._fetchJSON(`/report/${auditId}`);
+    const headers = await this._getAuthHeaders();
+    return this._fetchJSON(`/report/${auditId}`, { headers });
   },
 
   getDebiasedDownloadURL(auditId) {
@@ -62,8 +79,16 @@ const API = {
   },
 
   async generateNarrative(auditId) {
+    const headers = await this._getAuthHeaders();
     return this._fetchJSON(`/report/${auditId}/narrative`, {
-      method: "POST"
+      method: "POST",
+      headers
     });
+  },
+
+  // New — fetch user's audit history
+  async getHistory() {
+    const headers = await this._getAuthHeaders();
+    return this._fetchJSON("/history", { headers });
   }
 };

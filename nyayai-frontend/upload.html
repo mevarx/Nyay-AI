@@ -7,8 +7,18 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/upload.css">
+  <script src="js/config.js"></script>
+  <script type="module" src="js/auth.js"></script>
 </head>
 <body style="background-color: var(--color-bg)">
+  <!-- Auth guard -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
+    const { data: { user } } = await sb.auth.getUser()
+    if (!user) { window.location.href = 'login.html' }
+    else { window.currentUser = user }
+  </script>
 
   <nav class="navbar animate-on-scroll">
     <div class="container navbar__inner">
