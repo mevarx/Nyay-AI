@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/landing.css">
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/rainbow-button.css">
+  <link rel="stylesheet" href="css/interactive-hover-button.css">
   <link rel="stylesheet" href="css/glowing-effect.css?v=2">
 </head>
 <body>
@@ -73,7 +74,14 @@
         </p>
         <div class="hero__cta-group">
           <a href="signup.html" class="btn-rainbow btn-large">Audit Your Dataset →</a>
-          <a href="#how-it-works" class="btn-secondary btn-large">See How It Works</a>
+          <a href="#how-it-works" class="btn-interactive-hover">
+            <span class="btn-interactive-hover__text-initial">See How It Works</span>
+            <div class="btn-interactive-hover__hover-content">
+              <span>See How It Works</span>
+              <svg class="icon arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+            <div class="btn-interactive-hover__dot"></div>
+          </a>
         </div>
         <div class="hero__trust-badges">
           <span>✓ Free for students & NGOs</span>
@@ -268,8 +276,8 @@
   </section>
 
   <!-- Learn More Teaser -->
-  <section class="learn-teaser animate-on-scroll" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%);">
-    <div class="container learn-teaser__inner card" style="background-color: transparent; border: none; box-shadow: none;">
+  <section class="learn-teaser animate-on-scroll">
+    <div class="container learn-teaser__inner card">
       <h2>New to AI Bias? Start Here.</h2>
       <p style="color: rgba(255,255,255,0.8);">We've built a free learning resource explaining how algorithmic bias works,
       why it matters in India, and how to fix it — no technical background needed.</p>

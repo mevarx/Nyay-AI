@@ -1,0 +1,80 @@
+/* css/interactive-hover-button.css */
+.btn-interactive-hover {
+  position: relative;
+  display: inline-flex;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  padding: 0 var(--space-8);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-interactive-hover:hover {
+  border-color: var(--color-accent);
+}
+
+.btn-interactive-hover__text-initial {
+  display: inline-block;
+  transform: translateX(2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-interactive-hover:hover .btn-interactive-hover__text-initial {
+  transform: translateX(48px);
+  opacity: 0;
+}
+
+.btn-interactive-hover__hover-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #000; /* Contrast text against the primary accent background */
+  transform: translateX(48px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-interactive-hover:hover .btn-interactive-hover__hover-content {
+  transform: translateX(-2px);
+  opacity: 1;
+}
+
+.btn-interactive-hover__dot {
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  height: 8px;
+  width: 8px;
+  transform: scale(1);
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.btn-interactive-hover:hover .btn-interactive-hover__dot {
+  left: 0%;
+  top: 0%;
+  height: 100%;
+  width: 100%;
+  transform: scale(2.5); /* Scale up significantly to cover the entire button */
+  border-radius: var(--radius-md);
+}
