@@ -4,8 +4,8 @@
 </p>
 
 <p align="center">
-  <a href="https://nyayai.web.app">🌐 Live Demo</a> &nbsp;·&nbsp;
-  <a href="#">🎬 Demo Video</a> <em>(add before submission)</em>
+  <a href="will update">🌐 Live Demo</a> &nbsp;·&nbsp;
+  <a href="will update">🎬 Demo Video</a> <em>(add before submission)</em>
 </p>
 
 ---
@@ -137,7 +137,7 @@ Nyay AI/
 
 | Name | Role | College |
 |------|------|---------|
-| *Your Name* | Full-Stack Developer | *Your College* |
+| *will update* | Full-Stack Developer | *will update* |
 
 ---
 
