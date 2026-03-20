@@ -175,33 +175,78 @@ function renderConfigurePanel(data) {
   renderSensitiveToggles();
 
   // Render Outcome Dropdown
+  renderOutcomeDropdown(data.outcome);
+
+  // Initial population of the manual add dropdown
+  updateAddColumnDropdown();
+}
+
+function renderOutcomeDropdown(suggestedOutcome = null) {
   const outcomeSelect = document.getElementById("outcome-column-select");
+  if (!outcomeSelect) return;
+
+  // Use either the current selected value or the backend suggestion
+  const currentVal = outcomeSelect.value || suggestedOutcome;
   outcomeSelect.innerHTML = "";
-  data.columns.forEach(col => {
+  
+  allColumns.forEach(col => {
+    // A column cannot be both sensitive and an outcome
     if (!sensitiveColumns.includes(col)) {
         const option = document.createElement("option");
         option.value = col;
         option.textContent = col;
-        // Auto-select the outcome detected by the backend, or likely candidates
-        if (data.outcome && col === data.outcome) {
+        
+        if (currentVal && col === currentVal) {
             option.selected = true;
-        } else if (col.toLowerCase().includes("promote") || col.toLowerCase().includes("status") || col.toLowerCase().includes("loan")) {
+        } else if (!currentVal && (col.toLowerCase().includes("promote") || col.toLowerCase().includes("status") || col.toLowerCase().includes("loan") || col.toLowerCase().includes("target"))) {
+            // Only auto-select by keywords if nothing else is chosen
             option.selected = true;
         }
         outcomeSelect.appendChild(option);
     }
   });
+}
 
-  updateAddColumnDropdown();
+function setOutcome() {
+    const outcomeSelect = document.getElementById("outcome-column-select");
+    const selectedOutcome = outcomeSelect.value;
+    
+    if (selectedOutcome) {
+        // Double check it's not in sensitiveColumns (redundant but safe)
+        if (sensitiveColumns.includes(selectedOutcome)) {
+            sensitiveColumns = sensitiveColumns.filter(c => c !== selectedOutcome);
+            renderSensitiveToggles();
+            updateAddColumnDropdown();
+        }
+        
+        // Visual feedback
+        const btn = document.querySelector('button[onclick="setOutcome()"]');
+        const originalText = btn.textContent;
+        btn.textContent = "Saved ✓";
+        btn.style.backgroundColor = "var(--color-success)";
+        btn.style.color = "white";
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
+        }, 1500);
+    }
 }
 
 function renderSensitiveToggles() {
     const list = document.getElementById("sensitive-columns-list");
+    if (!list) return;
+    
     list.innerHTML = "";
+    if (sensitiveColumns.length === 0) {
+        list.innerHTML = `<p class="text-muted" style="font-size: 0.8em; font-style: italic;">No sensitive columns selected.</p>`;
+        return;
+    }
+
     sensitiveColumns.forEach(col => {
         list.innerHTML += `
-        <div class="toggle-item" id="toggle-${col}">
-            <span>${col}</span>
+        <div class="toggle-item animate-on-scroll visible" id="toggle-${col}" style="transform: none; opacity: 1;">
+            <span style="font-weight: 500;">${col}</span>
             <label class="toggle-switch">
                 <input type="checkbox" checked onchange="toggleSensitive('${col}', this.checked)">
                 <span class="slider"></span>
@@ -230,7 +275,9 @@ function toggleSensitive(col, isChecked) {
     } else if (!sensitiveColumns.includes(col)) {
         sensitiveColumns.push(col);
     }
+    renderSensitiveToggles();
     updateAddColumnDropdown();
+    renderOutcomeDropdown();
 }
 
 function addColumn() {
@@ -238,8 +285,19 @@ function addColumn() {
     const col = dropdown.value;
     if (col && !sensitiveColumns.includes(col)) {
         sensitiveColumns.push(col);
+        
+        // If this was the Outcome, we need to pick a new Outcome or clear it
+        const outcomeSelect = document.getElementById("outcome-column-select");
+        if (outcomeSelect && outcomeSelect.value === col) {
+            // It will be filtered out next time it renders
+        }
+        
         renderSensitiveToggles();
         updateAddColumnDropdown();
+        renderOutcomeDropdown();
+        
+        // Clear selection to avoid double-adding
+        dropdown.selectedIndex = 0;
     }
 }
 

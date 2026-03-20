@@ -17,7 +17,7 @@
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
     const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
     const { data: { user } } = await sb.auth.getUser()
-    if (!user) { window.location.href = 'login.html' }
+    if (!user) { window.location.href = CONFIG.AUTH_LOGIN_URL }
     else {
       window.currentUser = user
       // Update sidebar user info after DOM loads

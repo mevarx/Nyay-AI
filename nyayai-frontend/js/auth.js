@@ -42,7 +42,7 @@ async function signInWithGoogle() {
 // ── Logout ──────────────────────────────────────────────────────────
 async function logout() {
   await supabase.auth.signOut()
-  window.location.href = 'index.html'
+  window.location.href = CONFIG.AUTH_LOGIN_URL
 }
 
 // ── Get Current User ────────────────────────────────────────────────
@@ -74,7 +74,7 @@ async function getSessionToken() {
 async function requireAuth() {
   const user = await getCurrentUser()
   if (!user) {
-    window.location.href = 'login.html'
+    window.location.href = CONFIG.AUTH_LOGIN_URL
     return null
   }
   return user

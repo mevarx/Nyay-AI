@@ -13,6 +13,8 @@ __pycache__/
 # Node/Frontend
 node_modules/
 .npm/
+react-frontend/node_modules/
+react-frontend/.next/
 
 # IDE files
 .vscode/
