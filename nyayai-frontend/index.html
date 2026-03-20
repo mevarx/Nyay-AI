@@ -325,45 +325,152 @@
   </section>
 
   <!-- Footer -->
-  <footer class="footer animate-on-scroll" style="background-color: transparent;">
-    <div class="container footer__grid">
-      <div class="footer__brand">
-        <div class="footer__logo">
-          <span class="logo-nyay">Nyay</span><span class="logo-ai">AI</span>
+  <footer id="footer" style="width:100%; background:#000; border-top:1px solid rgba(255,255,255,0.08); padding-bottom:0;">
+    <!-- Top row -->
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; padding:2.5rem 3rem;">
+      <!-- Brand column -->
+      <div style="max-width:280px; margin-bottom:2rem;">
+        <a href="index.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none; margin-bottom:1rem;">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;">
+            <path d="M12 3L12 21M3 9L12 3L21 9M5 12L3 18H9L7 12H5ZM19 12L17 18H23L21 12H19Z" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span style="font-size:1.2rem; font-weight:700; color:#fff;">Nyay<span style="color:#f59e0b;">AI</span></span>
+        </a>
+        <p style="font-size:0.85rem; color:#9ca3af; line-height:1.6; margin:0 0 1rem 0;">
+          India's first AI-powered bias audit tool. Upload your datasets, uncover bias, and build fairer AI systems — for a more just future.
+        </p>
+        <span style="font-size:0.75rem; padding:0.3rem 0.85rem; border-radius:999px; background:rgba(129,140,248,0.1); border:1px solid rgba(129,140,248,0.2); color:#818cf8; font-weight:500;">
+          Justice through Data ⚖️
+        </span>
+      </div>
+
+      <!-- Links columns -->
+      <div style="display:flex; flex-wrap:wrap; gap:3rem;">
+        <!-- Product -->
+        <div>
+          <p style="font-size:0.85rem; font-weight:600; color:#fff; margin:0 0 0.75rem 0;">Product</p>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+            <li><a href="upload.html" class="footer-link">Upload Dataset</a></li>
+            <li><a href="dashboard.html" class="footer-link">Dashboard</a></li>
+            <li><a href="report.html" class="footer-link">Audit Report</a></li>
+            <li><a href="learn.html" class="footer-link">Learn More</a></li>
+          </ul>
         </div>
-        <p>India's first AI-powered bias audit platform for hiring, lending,
-        and admissions.</p>
-      </div>
-
-      <div class="footer__col">
-        <h4>Product</h4>
-        <ul>
-          <li><a href="upload.html">Upload Dataset</a></li>
-          <li><a href="#">View Sample Report</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__col">
-        <h4>Resources</h4>
-        <ul>
-          <li><a href="learn.html">Learn About Bias</a></li>
-          <li><a href="#">GitHub</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#about-us">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
+        <!-- Account -->
+        <div>
+          <p style="font-size:0.85rem; font-weight:600; color:#fff; margin:0 0 0.75rem 0;">Account</p>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+            <li><a href="login.html" class="footer-link">Sign In</a></li>
+            <li><a href="signup.html" class="footer-link">Create Account</a></li>
+            <li><a href="dashboard.html" class="footer-link">Dashboard</a></li>
+            <li><a href="#" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <!-- Resources -->
+        <div>
+          <p style="font-size:0.85rem; font-weight:600; color:#fff; margin:0 0 0.75rem 0;">Resources</p>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+            <li><a href="#about-us" class="footer-link">About NyayAI</a></li>
+            <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+            <li><a href="#features" class="footer-link">Features</a></li>
+            <li><a href="#" class="footer-link">GitHub</a></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p>© 2026 NyayAI. Built with ❤️ in India.</p>
+
+    <!-- Flickering canvas banner -->
+    <div style="width:100%; height:200px; position:relative; margin-top:2rem; overflow:hidden;">
+      <!-- Gradient fade -->
+      <div style="position:absolute; inset:0; background:linear-gradient(to bottom, #000 0%, transparent 60%); z-index:1; pointer-events:none;"></div>
+      <!-- Bottom strip -->
+      <div style="position:absolute; bottom:0; left:0; right:0; z-index:2; padding:1rem 3rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <p style="font-size:0.7rem; color:#374151; margin:0;">© 2026 NyayAI. All rights reserved.</p>
+        <p style="font-size:0.7rem; color:#374151; margin:0;">Powered by Gemini AI · Supabase · Flask</p>
+      </div>
+      <!-- Canvas -->
+      <canvas id="nyayai-footer-canvas" style="display:block; width:100%; height:200px;"></canvas>
     </div>
   </footer>
+
+  <style>
+    .footer-link {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-link:hover { color: #fff; }
+  </style>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('nyayai-footer-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const text = window.innerWidth < 768 ? 'NyayAI' : 'Justice through Data';
+      const fontSize = window.innerWidth < 768 ? 60 : 85;
+      const squareSize = 2, gridGap = 3, flickerChance = 0.08, maxOpacity = 0.25;
+      const color = { r: 129, g: 140, b: 248 };
+
+      let cols, rows, squares, animId, w, h;
+
+      function setup() {
+        const dpr = window.devicePixelRatio || 1;
+        w = canvas.parentElement.clientWidth;
+        h = 200;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.scale(dpr, dpr);
+        cols = Math.ceil(w / (squareSize + gridGap));
+        rows = Math.ceil(h / (squareSize + gridGap));
+        squares = new Float32Array(cols * rows);
+        for (let i = 0; i < squares.length; i++) squares[i] = Math.random() * maxOpacity;
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        // Build text mask
+        const mask = document.createElement('canvas');
+        mask.width = w; mask.height = h;
+        const mCtx = mask.getContext('2d', { willReadFrequently: true });
+        mCtx.fillStyle = 'white';
+        mCtx.font = '700 ' + fontSize + 'px Inter, -apple-system, sans-serif';
+        mCtx.textAlign = 'center';
+        mCtx.textBaseline = 'middle';
+        mCtx.fillText(text, w / 2, h / 2);
+
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            const x = i * (squareSize + gridGap);
+            const y = j * (squareSize + gridGap);
+            const data = mCtx.getImageData(x, y, squareSize, squareSize).data;
+            const hasText = Array.from(data).some((v, idx) => idx % 4 === 0 && v > 0);
+            const opacity = squares[i * rows + j];
+            const finalOpacity = hasText ? Math.min(1, opacity * 3 + 0.4) : opacity;
+            ctx.fillStyle = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + finalOpacity + ')';
+            ctx.fillRect(x, y, squareSize, squareSize);
+          }
+        }
+      }
+
+      let last = 0;
+      function animate(ts) {
+        const dt = (ts - last) / 1000; last = ts;
+        for (let i = 0; i < squares.length; i++) {
+          if (Math.random() < flickerChance * dt) squares[i] = Math.random() * maxOpacity;
+        }
+        draw();
+        animId = requestAnimationFrame(animate);
+      }
+
+      setup();
+      animId = requestAnimationFrame(animate);
+      window.addEventListener('resize', function() { cancelAnimationFrame(animId); setup(); animId = requestAnimationFrame(animate); });
+    })();
+  </script>
 
   <script src="js/navbar.js"></script>
   <script src="js/learn.js"></script>
