@@ -89,63 +89,92 @@
     </div>
 
     <!-- Step 2 — Configure panel -->
-    <div id="step-2-panel" class="wizard-panel card" style="display:none">
-      <div class="configure-layout">
+    <div id="step-2-panel" class="wizard-panel" style="display:none">
 
-        <div class="configure-preview animate-on-scroll">
-          <h3 style="color: var(--color-primary);">Dataset Preview</h3>
-          <p class="text-muted">First 5 rows of your data</p>
-          <div id="preview-table-container" style="overflow-x: auto; margin-top: 1rem; border-radius: var(--radius-md);">
-            <!-- Table injected by upload.js after API response -->
-          </div>
+      <!-- Dataset Preview Card -->
+      <div class="configure-card card animate-on-scroll">
+        <div class="configure-card__header">
+          <svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--color-primary);margin-right:10px;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          <h3 class="configure-card__title">Dataset Preview</h3>
+        </div>
+        <p class="text-muted" style="font-size:0.9em;margin-bottom:1rem;">First 5 rows of your uploaded data</p>
+        <div id="preview-table-container" class="preview-table-wrap">
+          <!-- Table injected by upload.js after API response -->
+        </div>
+      </div>
+
+      <!-- Audit Configuration Card -->
+      <div class="configure-card card animate-on-scroll" style="transition-delay:120ms;">
+        <div class="configure-card__header">
+          <svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--color-accent);margin-right:10px;"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <h3 class="configure-card__title">Audit Configuration</h3>
         </div>
 
-        <div class="configure-controls animate-on-scroll" style="transition-delay: 100ms;">
-          <h3 style="color: var(--color-primary);">Sensitive Columns</h3>
-          <p class="text-muted" style="font-size: 0.9em;">NyayAI detected these as sensitive. Toggle to confirm:</p>
-          <div id="sensitive-columns-list" class="toggle-list">
-            <!-- Toggle switches injected by upload.js -->
-          </div>
+        <!-- Two-column grid for controls -->
+        <div class="configure-grid">
 
-          <div class="configure-add-column">
-            <label style="font-size: 0.9em;">Add a column manually:</label>
-            <div class="flex-row">
-              <select id="add-column-dropdown" class="form-select flex-1">
-                <!-- Options from column list -->
-              </select>
-              <button onclick="addColumn()" class="btn-secondary" style="height: 42px;">Add</button>
+          <!-- Left: Sensitive Columns -->
+          <div class="configure-section">
+            <h4 class="configure-section__label">
+              <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;color:var(--color-primary);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+              Sensitive Columns
+            </h4>
+            <p class="text-muted" style="font-size:0.85em;margin-bottom:0.75rem;">NyayAI auto-detected these. Toggle to confirm:</p>
+            <div id="sensitive-columns-list" class="toggle-list">
+              <!-- Toggle switches injected by upload.js -->
+            </div>
+
+            <div class="configure-add-column" style="margin-top: 1rem;">
+              <label class="text-muted" style="font-size: 0.85em; display:block; margin-bottom: 0.5rem;">Add a column manually:</label>
+              <div class="flex-row">
+                <select id="add-column-dropdown" class="form-select flex-1">
+                  <!-- Options from column list -->
+                </select>
+                <button onclick="addColumn()" class="btn-secondary" style="height: 42px;">Add</button>
+              </div>
             </div>
           </div>
 
-          <hr style="margin: var(--space-6) 0; border: none; border-top: 1px solid var(--color-border);">
+          <!-- Right: Outcome & Depth -->
+          <div class="configure-section">
+            <h4 class="configure-section__label">
+              <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;color:var(--color-accent);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Outcome Column
+            </h4>
+            <p class="text-muted" style="font-size:0.85em;margin-bottom:0.5rem;">What is the model trying to predict?</p>
+            <select id="outcome-column-select" class="form-select w-full">
+              <!-- Options injected by upload.js -->
+            </select>
 
-          <h3 style="color: var(--color-primary);">Outcome Column</h3>
-          <p class="text-muted" style="font-size: 0.9em; margin-bottom: 0.5rem;">What is the model trying to predict?</p>
-          <select id="outcome-column-select" class="form-select w-full">
-            <!-- Options injected by upload.js -->
-          </select>
-
-          <hr style="margin: var(--space-6) 0; border: none; border-top: 1px solid var(--color-border);">
-
-          <h3 style="color: var(--color-primary);">Analysis Depth</h3>
-          <div class="radio-group" style="margin-top: 0.5rem;">
-            <label class="radio-label">
-              <input type="radio" name="depth" value="quick"> 
-              <span>Quick Scan (2 metrics)</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="depth" value="full" checked>
-              <span>Full Audit (5 metrics) — Recommended</span>
-            </label>
+            <div style="margin-top: var(--space-8);">
+              <h4 class="configure-section__label">
+                <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;margin-right:6px;color:var(--color-primary);"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                Analysis Depth
+              </h4>
+              <div class="radio-group" style="margin-top: 0.5rem;">
+                <label class="radio-label">
+                  <input type="radio" name="depth" value="quick"> 
+                  <span>Quick Scan <span class="text-muted">(2 metrics)</span></span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="depth" value="full" checked>
+                  <span>Full Audit <span class="text-muted">(5 metrics)</span> — Recommended</span>
+                </label>
+              </div>
+            </div>
           </div>
 
-          <button class="btn-primary btn-full btn-large" style="margin-top: var(--space-8);" id="runAuditBtn" onclick="runAudit()">
+        </div>
+
+        <!-- Run Audit Button -->
+        <div style="margin-top: var(--space-8); text-align: center;">
+          <button class="btn-primary btn-large" id="runAuditBtn" onclick="runAudit()" style="width: 100%; max-width: 400px; display:inline-flex; align-items:center; justify-content:center;">
             <svg class="icon" viewBox="0 0 24 24" style="width: 20px; height: 20px; margin-right: 8px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             Run Bias Audit
           </button>
         </div>
-
       </div>
+
     </div>
   </main>
 

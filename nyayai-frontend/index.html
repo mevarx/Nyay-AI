@@ -90,15 +90,174 @@
         </div>
       </div>
       <div class="hero__right">
-        <div class="hero-mockup card">
-          <div class="mockup-header" style="color: var(--color-primary);">Bias Audit Overview</div>
-          <div class="mockup-body">
-            <div class="mockup-line"></div>
-            <div class="mockup-line short"></div>
-            <div class="mockup-chart" style="background: linear-gradient(180deg, rgba(245, 158, 11, 0.2) 0%, transparent 100%); border-bottom: 2px solid var(--color-accent);"></div>
+        <div class="hero-mockup card" style="padding:0;overflow:hidden;min-height:390px;cursor:default;font-family:'JetBrains Mono',monospace,sans-serif;">
+
+          <!-- Terminal titlebar -->
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.02);">
+            <div style="display:flex;gap:8px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#10b981;"></div>
+            </div>
+            <span style="font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.06em;">nyayai  —  bias-scan</span>
+            <div id="scanStatus" style="display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);padding:3px 10px;border-radius:999px;">
+              <span style="width:5px;height:5px;border-radius:50%;background:#f59e0b;display:inline-block;animation:pulse-dot 1.2s ease-in-out infinite;"></span>
+              Scanning…
+            </div>
           </div>
+
+          <!-- Upload context pill -->
+          <div style="padding:11px 18px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:10px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            <div>
+              <span style="font-size:0.78rem;color:#fff;font-weight:600;">loan_dataset_india.csv</span>
+              <span style="font-size:0.68rem;color:rgba(255,255,255,0.35);margin-left:8px;">8,312 rows · outcome: approved</span>
+            </div>
+          </div>
+
+          <!-- Typewriter output -->
+          <div id="terminalOut" style="padding:14px 18px 12px;font-size:0.72rem;line-height:1.8;color:rgba(255,255,255,0.7);min-height:210px;overflow:hidden;"></div>
+
+          <!-- Verdict bar (hidden until end) -->
+          <div id="verdictBar" style="margin:0 18px 16px;padding:12px 16px;border-radius:12px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);display:none;align-items:center;justify-content:space-between;">
+            <div>
+              <p style="font-size:0.62rem;color:rgba(255,255,255,0.4);margin:0 0 2px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Verdict</p>
+              <p style="font-size:1rem;font-weight:800;color:#ef4444;margin:0;" id="verdictText"></p>
+            </div>
+            <a href="upload.html" style="font-size:0.72rem;font-weight:700;color:#818cf8;text-decoration:none;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);padding:6px 14px;border-radius:8px;white-space:nowrap;">Try on your data →</a>
+          </div>
+
         </div>
       </div>
+
+      <style>
+        @keyframes pulse-dot {
+          0%,100% { opacity:1;transform:scale(1); }
+          50%       { opacity:0.3;transform:scale(0.6); }
+        }
+        .term-dim    { color: rgba(255,255,255,0.35); }
+        .term-ok     { color: #10b981; font-weight:700; }
+        .term-warn   { color: #f59e0b; font-weight:700; }
+        .term-err    { color: #ef4444; font-weight:700; }
+        .term-info   { color: #818cf8; font-weight:700; }
+        .term-cursor { display:inline-block; width:7px; height:0.85em; background:rgba(255,255,255,0.6); vertical-align:middle; animation:blink 0.9s step-end infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+      </style>
+
+      <script>
+      (function(){
+        const out    = document.getElementById('terminalOut');
+        const bar    = document.getElementById('verdictBar');
+        const vtext  = document.getElementById('verdictText');
+        const status = document.getElementById('scanStatus');
+
+        const lines = [
+          { t:0,    html:'<span class="term-dim">$</span> nyayai scan loan_dataset_india.csv --outcome approved' },
+          { t:700,  html:'<span class="term-dim">›</span> Parsing columns…' },
+          { t:1400, html:'<span class="term-dim">›</span> Detected: <span class="term-info">gender, age, pin_code, caste_surname, income, district</span>' },
+          { t:2300, html:'<span class="term-warn">⚠</span>  Proxy check: <span class="term-warn">pin_code</span> correlates 87% with scheduled-caste geography' },
+          { t:3400, html:'<span class="term-warn">⚠</span>  Proxy check: <span class="term-warn">caste_surname</span> → religion inference confidence 91%' },
+          { t:4500, html:'<span class="term-dim">›</span> Running Disparate Impact (gender)… <span class="term-err">0.58 ✗  below 0.80 threshold</span>' },
+          { t:5600, html:'<span class="term-dim">›</span> Running Statistical Parity (district)… <span class="term-warn">−0.21 ✗  statistically significant</span>' },
+          { t:6700, html:'<span class="term-dim">›</span> Running Equalised Odds (income)… <span class="term-ok">0.03 ✓  within threshold</span>' },
+          { t:7800, html:'<span class="term-err">✗</span>  <span class="term-err">LEGALLY SIGNIFICANT</span> — Art. 15 Constitution of India may apply' },
+          { t:8900, html:'<span class="term-dim">›</span> Generating Gemini narrative + fix suggestions…' },
+          { t:9900, html:'<span class="term-ok">✓</span>  Report ready — <span class="term-info">2 critical flags, 1 proxy risk, 1 clear</span>' },
+        ];
+
+        const VERDICT = '⚠ High Bias — Fix Before Deployment';
+        const LOOP_DELAY = 3500;
+
+        function run() {
+          out.innerHTML = '';
+          bar.style.display = 'none';
+          vtext.textContent = '';
+          status.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:#f59e0b;display:inline-block;animation:pulse-dot 1.2s ease-in-out infinite;"></span> Scanning…';
+          status.style.color = '#f59e0b';
+          status.style.borderColor = 'rgba(245,158,11,0.2)';
+          status.style.background = 'rgba(245,158,11,0.1)';
+
+          lines.forEach(({ t, html }) => {
+            setTimeout(() => {
+              const cursor = out.querySelector('.term-cursor');
+              if (cursor) cursor.remove();
+              const p = document.createElement('p');
+              p.style.margin = '0';
+              p.innerHTML = '<span class="term-dim">  </span>' + html + ' <span class="term-cursor"></span>';
+              out.appendChild(p);
+            }, t);
+          });
+
+          // Show verdict
+          setTimeout(() => {
+            const lastCursor = out.querySelector('.term-cursor');
+            if (lastCursor) lastCursor.remove();
+            bar.style.display = 'flex';
+            // Typewrite verdict
+            let i = 0;
+            const iv = setInterval(() => {
+              vtext.textContent = VERDICT.slice(0, ++i);
+              if (i >= VERDICT.length) clearInterval(iv);
+            }, 32);
+            // Update status chip
+            status.innerHTML = '<span style="width:5px;height:5px;border-radius:50%;background:#ef4444;display:inline-block;"></span> Done';
+            status.style.color = '#ef4444';
+            status.style.borderColor = 'rgba(239,68,68,0.25)';
+            status.style.background = 'rgba(239,68,68,0.08)';
+          }, lines[lines.length-1].t + 700);
+
+          // Loop
+          setTimeout(run, lines[lines.length-1].t + LOOP_DELAY + VERDICT.length * 32 + 800);
+        }
+
+        run();
+      })();
+      </script>
+        </div>
+      </div>
+      <style>
+        .mockup-status-chip {
+          display: inline-flex; align-items: center; gap: 5px;
+          font-size: 0.65rem; font-weight: 700; color: #10b981;
+          background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+          padding: 3px 10px; border-radius: 999px;
+        }
+        .chip-dot {
+          width: 5px; height: 5px; border-radius: 50%; background: #10b981;
+          animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50%        { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        .mockup-metric {
+          display: flex; align-items: center; gap: 10px;
+        }
+        .metric-label {
+          font-size: 0.72rem; color: rgba(255,255,255,0.65); white-space: nowrap;
+          width: 165px; flex-shrink: 0; font-weight: 500;
+        }
+        .metric-col { color: rgba(255,255,255,0.35); font-weight: 400; }
+        .metric-bar-wrap {
+          flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 999px; overflow: hidden;
+        }
+        .metric-bar {
+          height: 100%; width: 0%; border-radius: 999px;
+          animation: bar-grow 1.4s cubic-bezier(.22,1,.36,1) forwards;
+          animation-delay: 0.3s;
+        }
+        .metric-bar.high { background: linear-gradient(90deg, #ef4444, #f87171); animation-delay: 0.3s; }
+        .metric-bar.warn { background: linear-gradient(90deg, #f59e0b, #fbbf24); animation-delay: 0.5s; }
+        .metric-bar.ok   { background: linear-gradient(90deg, #10b981, #34d399); animation-delay: 0.7s; }
+        @keyframes bar-grow { to { width: var(--w); } }
+
+        .metric-val {
+          font-size: 0.75rem; font-weight: 700; width: 36px; text-align: right; flex-shrink: 0;
+        }
+      </style>
     </div>
   </section>
 
@@ -275,16 +434,127 @@
     </div>
   </section>
 
-  <!-- Learn More Teaser -->
-  <section class="learn-teaser animate-on-scroll">
-    <div class="container learn-teaser__inner card">
-      <h2>New to AI Bias? Start Here.</h2>
-      <p style="color: rgba(255,255,255,0.8);">We've built a free learning resource explaining how algorithmic bias works,
-      why it matters in India, and how to fix it — no technical background needed.</p>
-      <br>
-      <a href="learn.html" class="btn-primary btn-large">Explore the Learn Hub →</a>
+  <!-- Learn More Teaser — Pulse Beam card -->
+  <section class="learn-teaser animate-on-scroll" style="position:relative; overflow:visible;">
+    <div class="container" style="position:relative;">
+
+      <!-- SVG beam overlay — absolutely fills the container -->
+      <div id="pulse-beam-wrap" style="position:absolute;inset:-60px;pointer-events:none;z-index:0;overflow:visible;">
+        <svg id="pulse-svg" width="100%" height="100%" viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet"
+             fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+          <defs>
+            <!-- Base gradient (traveling highlight) stop colors -->
+            <!-- Beam 1 -->
+            <linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="180">
+              <stop offset="0%"  stop-color="#818cf8" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#818cf8" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a78bfa" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </linearGradient>
+            <!-- Beam 2 -->
+            <linearGradient id="g2" gradientUnits="userSpaceOnUse" x1="900" y1="0" x2="600" y2="180">
+              <stop offset="0%"  stop-color="#818cf8" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#818cf8" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a78bfa" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </linearGradient>
+            <!-- Beam 3 -->
+            <linearGradient id="g3" gradientUnits="userSpaceOnUse" x1="0" y1="360" x2="300" y2="180">
+              <stop offset="0%"  stop-color="#818cf8" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#818cf8" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a78bfa" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </linearGradient>
+            <!-- Beam 4 -->
+            <linearGradient id="g4" gradientUnits="userSpaceOnUse" x1="900" y1="360" x2="600" y2="180">
+              <stop offset="0%"  stop-color="#818cf8" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#818cf8" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a78bfa" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </linearGradient>
+            <!-- Beam 5 top centre -->
+            <linearGradient id="g5" gradientUnits="userSpaceOnUse" x1="450" y1="-60" x2="450" y2="120">
+              <stop offset="0%"  stop-color="#818cf8" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#818cf8" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#a78bfa" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ── Static dim rail paths ── -->
+          <!-- top-left corner → card edge -->
+          <path class="pb-rail" d="M60 0 L60 100 Q60 120 80 120 L270 120"/>
+          <!-- top-right corner → card edge -->
+          <path class="pb-rail" d="M840 0 L840 100 Q840 120 820 120 L630 120"/>
+          <!-- bottom-left corner → card edge -->
+          <path class="pb-rail" d="M60 360 L60 260 Q60 240 80 240 L270 240"/>
+          <!-- bottom-right corner → card edge -->
+          <path class="pb-rail" d="M840 360 L840 260 Q840 240 820 240 L630 240"/>
+          <!-- top centre drop -->
+          <path class="pb-rail" d="M450 0 L450 120"/>
+
+          <!-- ── Animated highlight beams (same paths, gradient stroke) ── -->
+          <path class="pb-beam pb-beam-1" d="M60 0 L60 100 Q60 120 80 120 L270 120" stroke="url(#g1)"/>
+          <path class="pb-beam pb-beam-2" d="M840 0 L840 100 Q840 120 820 120 L630 120" stroke="url(#g2)"/>
+          <path class="pb-beam pb-beam-3" d="M60 360 L60 260 Q60 240 80 240 L270 240" stroke="url(#g3)"/>
+          <path class="pb-beam pb-beam-4" d="M840 360 L840 260 Q840 240 820 240 L630 240" stroke="url(#g4)"/>
+          <path class="pb-beam pb-beam-5" d="M450 0 L450 120" stroke="url(#g5)"/>
+
+          <!-- ── Connection dots ── -->
+          <circle class="pb-dot" cx="60"  cy="0"   r="5"/>
+          <circle class="pb-dot" cx="270" cy="120" r="5"/>
+          <circle class="pb-dot" cx="840" cy="0"   r="5"/>
+          <circle class="pb-dot" cx="630" cy="120" r="5"/>
+          <circle class="pb-dot" cx="60"  cy="360" r="5"/>
+          <circle class="pb-dot" cx="270" cy="240" r="5"/>
+          <circle class="pb-dot" cx="840" cy="360" r="5"/>
+          <circle class="pb-dot" cx="630" cy="240" r="5"/>
+          <circle class="pb-dot" cx="450" cy="0"   r="5"/>
+        </svg>
+      </div>
+
+      <!-- The actual card content (z-index above SVG) -->
+      <div class="learn-teaser__inner card" style="position:relative;z-index:1;">
+        <h2>New to AI Bias? Start Here.</h2>
+        <p style="color: rgba(255,255,255,0.8);">We've built a free learning resource explaining how algorithmic bias works,
+        why it matters in India, and how to fix it — no technical background needed.</p>
+        <br>
+        <a href="learn.html" class="btn-primary btn-large">Explore the Learn Hub →</a>
+      </div>
     </div>
   </section>
+
+  <style>
+    /* ── Pulse Beam styles ── */
+    .pb-rail {
+      stroke: rgba(129, 140, 248, 0.15);
+      stroke-width: 1.5;
+    }
+    .pb-beam {
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      fill: none;
+    }
+    .pb-dot {
+      fill: rgba(15, 15, 30, 0.9);
+      stroke: rgba(129, 140, 248, 0.4);
+      stroke-width: 1.5;
+    }
+
+    /* Traveling effect via dashoffset animation */
+    .pb-beam-1 { stroke-dasharray: 60 999; animation: beam-travel 3s linear infinite; animation-delay: 0s; }
+    .pb-beam-2 { stroke-dasharray: 60 999; animation: beam-travel 3s linear infinite; animation-delay: 0.6s; }
+    .pb-beam-3 { stroke-dasharray: 60 999; animation: beam-travel 3s linear infinite; animation-delay: 1.2s; }
+    .pb-beam-4 { stroke-dasharray: 60 999; animation: beam-travel 3s linear infinite; animation-delay: 1.8s; }
+    .pb-beam-5 { stroke-dasharray: 40 999; animation: beam-travel 2.5s linear infinite; animation-delay: 2.4s; }
+
+    @keyframes beam-travel {
+      0%   { stroke-dashoffset: 300; opacity: 0; }
+      5%   { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { stroke-dashoffset: -300; opacity: 0; }
+    }
+  </style>
 
   <!-- FAQ Section -->
   <section class="faq animate-on-scroll" id="faq" style="background-color: transparent;">

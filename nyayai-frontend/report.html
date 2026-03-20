@@ -11,8 +11,7 @@
   <script src="js/config.js"></script>
   <script type="module" src="js/auth.js"></script>
 </head>
-<body style="background-color: var(--color-bg)">
-  <!-- Auth guard -->
+<body>
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
     const sb = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY)
@@ -32,85 +31,143 @@
     </div>
   </nav>
 
-  <main class="container report-main animate-on-scroll">
-    
-    <!-- Sticky top bar -->
-    <div class="report-topbar animate-on-scroll">
-      <div>
-        <h1 id="report-filename" style="font-size: var(--text-2xl); color: var(--color-primary);">Loading Report...</h1>
-        <span id="report-date" class="text-muted"></span>
-      </div>
-      <div class="report-topbar__actions">
-        <button onclick="window.print()" class="btn-secondary">
-          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Download PDF
-        </button>
-        <a href="upload.html" class="btn-primary">
-          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> New Audit
-        </a>
-      </div>
-    </div>
+  <!-- ─── REPORT PAGE BODY ─── -->
+  <div class="report-page">
+    <div class="container">
 
-    <!-- Section A — Verdict Banner -->
-    <section class="verdict-banner card animate-on-scroll" id="verdict-banner" style="transition-delay: 100ms;">
-      <div class="verdict-banner__inner">
-        <div class="verdict-banner__score">
-          <div style="position: relative; width: 150px; height: 75px;">
-             <!-- Half Doughnut Chart used as Gauge -->
-            <canvas id="biasGauge"></canvas>
-            <div class="verdict-banner__label" id="verdict-label">...</div>
+      <!-- HERO -->
+      <header class="report-hero animate-on-scroll">
+        <div class="report-hero__left">
+          <span class="report-tag">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            Bias Audit Report
+          </span>
+          <h1 id="report-filename" class="report-hero__title">Loading…</h1>
+          <p id="report-date" class="report-hero__date text-muted"></p>
+        </div>
+        <div class="report-hero__actions">
+          <button onclick="window.print()" class="btn-secondary" style="display:inline-flex;align-items:center;gap:8px;">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Export PDF
+          </button>
+          <a href="upload.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            New Audit
+          </a>
+        </div>
+      </header>
+
+      <!-- ── A: VERDICT BANNER ── -->
+      <section class="report-section animate-on-scroll" style="transition-delay:80ms">
+        <p class="report-label">Overall Verdict</p>
+        <h2 class="report-section-title">Executive Summary</h2>
+        <div class="card report-card verdict-card" id="verdict-banner">
+          <div class="verdict-layout">
+            <div class="verdict-gauge-wrap">
+              <div style="position:relative;width:150px;height:75px;">
+                <canvas id="biasGauge"></canvas>
+                <div class="verdict-score-label" id="verdict-label">—</div>
+              </div>
+              <p class="text-muted" style="font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;margin-top:8px;">Bias Score</p>
+            </div>
+            <div class="verdict-divider"></div>
+            <div class="verdict-text">
+              <div class="spinner" id="summary-spinner"></div>
+              <p id="executive-summary-text" class="text-muted" style="font-size:1rem;line-height:1.8;">Generating AI narrative…</p>
+            </div>
+          </div>
+
+          <!-- Dataset stats strip — required by report.js -->
+          <div class="verdict-stats">
+            <div class="verdict-stat">
+              <span class="verdict-stat__value" id="stat-rows">—</span>
+              <span class="verdict-stat__label">Rows Analyzed</span>
+            </div>
+            <div class="verdict-stat">
+              <span class="verdict-stat__value" id="stat-features">—</span>
+              <span class="verdict-stat__label">Features Checked</span>
+            </div>
+            <div class="verdict-stat">
+              <span class="verdict-stat__value" id="stat-protected">—</span>
+              <span class="verdict-stat__label">Protected Columns</span>
+            </div>
           </div>
         </div>
-        <div class="verdict-banner__summary">
-          <h2 style="margin-bottom: var(--space-2);">Executive Summary</h2>
-          <div class="spinner" id="summary-spinner"></div>
-          <p id="executive-summary-text" style="font-size: var(--text-base); color: var(--color-text); line-height: 1.6;">Generating report narrative...</p>
+      </section>
+
+      <!-- ── B: DATASET NARRATIVE ── -->
+      <section class="report-section animate-on-scroll" style="transition-delay:140ms">
+        <p class="report-label">Dataset Narrative</p>
+        <h2 class="report-section-title">What Your Data Is Saying</h2>
+        <div class="card report-card">
+          <div class="spinner" id="story-spinner"></div>
+          <div id="story-text" class="story-content text-muted"></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Section B — The Story -->
-    <section class="report-story card animate-on-scroll" style="transition-delay: 200ms;">
-      <h2>What Your Data Is Saying</h2>
-      <div class="spinner" id="story-spinner"></div>
-      <div id="story-text" class="story-content text-muted"></div>
-    </section>
+      <!-- ── C: FINDINGS ── -->
+      <section class="report-section animate-on-scroll" style="transition-delay:200ms">
+        <p class="report-label">Statistical Analysis</p>
+        <h2 class="report-section-title">Findings by Column</h2>
+        <div class="findings-grid" id="findings-grid"></div>
+      </section>
 
-    <!-- Section C — Breakdown Cards -->
-    <section class="findings-section animate-on-scroll">
-      <h2 style="margin-bottom: var(--space-6); color: var(--color-primary);">Findings by Column</h2>
-      <div class="findings-grid" id="findings-grid">
-        <!-- Cards injected by report.js -->
-      </div>
-    </section>
+      <!-- ── D: FIXES ── -->
+      <section class="report-section animate-on-scroll" style="transition-delay:260ms">
+        <p class="report-label">Remediation</p>
+        <h2 class="report-section-title">How to Fix This</h2>
+        <p class="text-muted" style="font-size:0.925rem;margin-bottom:2rem;">Select interventions to simulate their impact on dataset fairness.</p>
+        <div class="card report-card">
+          <div id="fixes-list" class="fixes-list"></div>
+          <div class="fixes-footer">
+            <button class="btn-primary" id="applyFixesBtn" onclick="applyFixes()" disabled
+              style="display:inline-flex;align-items:center;gap:10px;padding:0.875rem 2.5rem;font-size:1rem;font-weight:700;">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;"><polyline points="20 6 9 17 4 12"/></svg>
+              Apply Selected Fixes
+            </button>
+          </div>
+        </div>
+      </section>
 
-    <!-- Section D — Fix Recommendations -->
-    <section class="fixes-section card animate-on-scroll">
-      <h2>How to Fix This</h2>
-      <p class="text-muted" style="margin-bottom: var(--space-6);">Select interventions to simulate their impact on your dataset fairness.</p>
-      <div id="fixes-list" class="fixes-list">
-        <!-- Fix items injected by report.js -->
-      </div>
-      <button class="btn-primary btn-large" style="margin-top: var(--space-6);" id="applyFixesBtn" onclick="applyFixes()" disabled>
-        Apply Selected Fixes
-      </button>
-    </section>
+      <!-- ── E: DOWNLOAD ── -->
+      <section class="report-section animate-on-scroll" style="transition-delay:320ms">
+        <p class="report-label">Export</p>
+        <h2 class="report-section-title">Download Your Results</h2>
+        <div class="download-row">
 
-    <!-- Section E — Download -->
-    <section class="download-section card animate-on-scroll" style="text-align: center;">
-      <h2 style="margin-bottom: var(--space-4);">Download & Share</h2>
-      <div class="download-buttons" style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-        <button onclick="window.print()" class="btn-secondary">
-          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M14 2H6a2 2 0 0 0-2 2v16h16V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg> 
-          Download Audit Report (PDF)
-        </button>
-        <a id="debiased-download-link" href="#" class="btn-primary">
-          <svg class="icon" viewBox="0 0 24 24" style="width: 18px; margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-          Download Debiased Dataset
-        </a>
-      </div>
-    </section>
+          <div class="card report-card download-item">
+            <div class="download-item__icon" style="color:var(--color-primary)">
+              <svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.5;"><path d="M14 2H6a2 2 0 0 0-2 2v16h16V8l-6-6z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:4px;">Audit Report</h3>
+              <p class="text-muted" style="font-size:0.85rem;">PDF with full findings &amp; charts.</p>
+            </div>
+            <button onclick="window.print()" class="btn-secondary" style="display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:0.875rem;">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download PDF
+            </button>
+          </div>
 
-  </main>
+          <div class="card report-card download-item">
+            <div class="download-item__icon" style="color:var(--color-accent)">
+              <svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.5;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            </div>
+            <div>
+              <h3 style="font-size:1rem;font-weight:700;margin-bottom:4px;">Debiased Dataset</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Clean CSV with bias removed.</p>
+            </div>
+            <a id="debiased-download-link" href="#" class="btn-primary" style="display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:0.875rem;">
+              <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download CSV
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </div><!-- /report-page -->
 
   <script src="js/config.js"></script>
   <script src="js/cache.js"></script>

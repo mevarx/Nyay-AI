@@ -142,30 +142,72 @@
   padding-top: var(--space-6);
 }
 
-/* Step 2 Layout */
-.configure-layout {
+/* Step 2 — Configure Cards Layout */
+.configure-card {
+  margin-bottom: var(--space-6);
+}
+
+.configure-card:hover {
+  transform: none; /* Don't float these cards on hover */
+}
+
+.configure-card__header {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.configure-card__title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.preview-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.configure-grid {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-8);
+  margin-top: var(--space-6);
 }
 
 @media (min-width: 768px) {
-  .configure-layout {
-    flex-direction: row;
-  }
-  .configure-preview {
-    flex: 2;
-  }
-  .configure-controls {
-    flex: 1;
-    min-width: 340px; /* Slightly wider */
-    border-left: 1px solid var(--color-border);
-    padding-left: var(--space-8); /* More breathing room */
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+  .configure-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
+
+.configure-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: border-color 0.3s;
+}
+
+.configure-section:hover {
+  border-color: rgba(129, 140, 248, 0.3);
+}
+
+.configure-section__label {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
 
 .configure-controls h3 {
   margin-bottom: var(--space-2);
