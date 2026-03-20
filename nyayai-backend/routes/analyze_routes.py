@@ -132,6 +132,7 @@ def analyze():
     result = {
         "audit_id": audit_id,
         "session_id": session_id,
+        "user_id": user_id,
         "completed_at": completed_at,
         "dataset_summary": {
             "total_rows": len(df),

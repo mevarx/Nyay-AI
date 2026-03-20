@@ -4,6 +4,7 @@ from utils.response_builder import success_response, error_response
 import os
 from services.gemini_service import generate_narrative
 from config import UPLOAD_FOLDER
+from utils.auth_middleware import get_user_id_from_token
 
 report_bp = Blueprint("report", __name__)
 
@@ -18,6 +19,15 @@ def get_report(audit_id):
     if not result:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
 
+    # Auth & Ownership check
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in.", 401)
+    
+    audit_owner = result.get("user_id")
+    if audit_owner and audit_owner != user_id:
+        return error_response("UNAUTHORIZED", "You do not have permission to view this report.", 403)
+
     return success_response(result)
 
 
@@ -30,6 +40,15 @@ def download_debiased(audit_id):
     audit = load_from_cache(f"report_{audit_id}")
     if not audit:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
+
+    # Auth & Ownership check
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in.", 401)
+    
+    audit_owner = audit.get("user_id")
+    if audit_owner and audit_owner != user_id:
+        return error_response("UNAUTHORIZED", "You do not have permission to download this file.", 403)
 
     session_id = audit.get("session_id", "")
     debiased_path = os.path.join(UPLOAD_FOLDER, f"{session_id}_debiased.csv")
@@ -59,5 +78,14 @@ def get_report_narrative(audit_id):
     if not audit:
         return error_response("REPORT_NOT_FOUND", "Audit report not found.", 404)
         
+    # Auth & Ownership check
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in.", 401)
+    
+    audit_owner = audit.get("user_id")
+    if audit_owner and audit_owner != user_id:
+        return error_response("UNAUTHORIZED", "You do not have permission to access this narrative.", 403)
+
     narrative = generate_narrative(audit_id, audit)
     return success_response({"narrative": narrative})

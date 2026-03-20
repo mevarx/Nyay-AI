@@ -9,6 +9,7 @@ from services.metrics_service import (
 from utils.validators import validate_fix_request
 from utils.response_builder import success_response, error_response
 from utils.cache import load_from_cache, save_to_cache
+from utils.auth_middleware import get_user_id_from_token
 
 fix_bp = Blueprint("fix", __name__)
 
@@ -38,16 +39,27 @@ def fix():
     audit_id = data["audit_id"]
     fix_actions = data["fix_actions"]
 
+    # Auth check
+    user_id = get_user_id_from_token()
+    if not user_id:
+        return error_response("UNAUTHORIZED", "Please log in.", 401)
+
     # Step 2: Load dataset
     try:
         df = load_dataset(session_id)
     except FileNotFoundError:
         return error_response("SESSION_NOT_FOUND", "Session expired or not found.", 404)
 
-    # Step 3: Load original audit
-    original_audit = load_from_cache(f"audit_{audit_id}")
+    # Step 3: Load original audit (note: saved under 'report_' key by analyze_routes)
+    original_audit = load_from_cache(f"report_{audit_id}")
     if not original_audit:
         return error_response("REPORT_NOT_FOUND", "Audit not found.", 404)
+
+    # Ownership check (IDOR Protection)
+    # Only enforce if user_id is present in the cached audit (new audits will always have it)
+    audit_owner = original_audit.get("user_id")
+    if audit_owner and audit_owner != user_id:
+        return error_response("UNAUTHORIZED", "You do not have permission to access this audit.", 403)
 
     before_verdict = original_audit.get("overall_verdict", {})
     before_score = before_verdict.get("bias_score", 0)

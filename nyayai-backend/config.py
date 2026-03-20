@@ -18,14 +18,17 @@ FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev_secret")
 
 # File handling
 MAX_UPLOAD_SIZE_MB = int(os.getenv("MAX_UPLOAD_SIZE_MB", 50))
-MAX_UPLOAD_SIZE_BYTES = MAX_UPLOAD_SIZE_MB * 1024 * 1024
 UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "./uploads")
 CACHE_FOLDER = os.getenv("CACHE_FOLDER", "./cache")
 ALLOWED_EXTENSIONS = {"csv"}
 
-# Analysis
-MIN_ROWS_REQUIRED = 3  # Set to 50 for production; 3 for dev/demo with sample data
-MIN_COLUMNS_REQUIRED = 3
+# File Limits
+MAX_FILE_SIZE_MB = 10
+MAX_CONTENT_LENGTH = MAX_FILE_SIZE_MB * 1024 * 1024
+
+# Dataset Requirements
+MIN_ROWS_REQUIRED = 5
+MIN_COLUMNS_REQUIRED = 2
 MIN_UNIQUE_VALUES_PER_SENSITIVE_COL = 2
 
 # Bias score thresholds

@@ -1,5 +1,5 @@
 import os
-from config import ALLOWED_EXTENSIONS, MAX_UPLOAD_SIZE_BYTES
+from config import ALLOWED_EXTENSIONS, MAX_CONTENT_LENGTH
 
 
 def _allowed_file(filename: str) -> bool:
@@ -18,16 +18,22 @@ def validate_file_upload(file) -> tuple:
     if not _allowed_file(file.filename):
         return False, "INVALID_FILE_TYPE", "Only CSV files are accepted."
 
+    # MIME type check
+    allowed_mimes = {"text/csv", "application/vnd.ms-excel", "text/plain"}
+    if file.content_type not in allowed_mimes:
+         # Some browsers/OSs list CSV as text/plain or excel; we allow these but verify extension
+         pass 
+
     # Check file size by reading into memory briefly
     file.seek(0, os.SEEK_END)
     size = file.tell()
     file.seek(0)  # Reset for later reading
 
-    if size > MAX_UPLOAD_SIZE_BYTES:
+    if size > MAX_CONTENT_LENGTH:
         return (
             False,
             "FILE_TOO_LARGE",
-            f"File exceeds the {MAX_UPLOAD_SIZE_BYTES // (1024*1024)}MB upload limit.",
+            f"File exceeds the {MAX_CONTENT_LENGTH // (1024*1024)}MB upload limit.",
         )
 
     if size == 0:

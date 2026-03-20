@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from config import FLASK_SECRET_KEY, UPLOAD_FOLDER, CACHE_FOLDER
+from config import FLASK_SECRET_KEY, UPLOAD_FOLDER, CACHE_FOLDER, MAX_CONTENT_LENGTH
 from routes.upload_routes import upload_bp
 from routes.analyze_routes import analyze_bp
 from routes.fix_routes import fix_bp
@@ -12,6 +12,7 @@ import os
 def create_app():
     app = Flask(__name__)
     app.secret_key = FLASK_SECRET_KEY
+    app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
     # Allow frontend to call backend (local dev + production)
     CORS(app, origins=[

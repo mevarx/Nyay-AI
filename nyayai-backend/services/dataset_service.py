@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import uuid
 import os
-from config import UPLOAD_FOLDER, MIN_ROWS_REQUIRED, MIN_COLUMNS_REQUIRED
+from config import UPLOAD_FOLDER, MIN_ROWS_REQUIRED, MIN_COLUMNS_REQUIRED, MAX_CONTENT_LENGTH
 
 
 def save_uploaded_file(file) -> str:
@@ -11,6 +11,15 @@ def save_uploaded_file(file) -> str:
     Returns session_id (the UUID string).
     """
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    
+    # Check file size (redundant to Flask config but good for explicit error handling)
+    file.seek(0, os.SEEK_END)
+    size = file.tell()
+    file.seek(0)
+    
+    if size > MAX_CONTENT_LENGTH:
+        raise ValueError(f"File size exceeds the {MAX_CONTENT_LENGTH // (1024*1024)}MB limit.")
+        
     session_id = str(uuid.uuid4())
     file_path = os.path.join(UPLOAD_FOLDER, f"{session_id}.csv")
     file.save(file_path)

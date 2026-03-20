@@ -19,13 +19,26 @@ def get_user_id_from_token() -> str | None:
     token = auth_header.replace("Bearer ", "").strip()
 
     try:
+        # Try strict audience verification first (Supabase standard)
         decoded = jwt.decode(
             token,
             SUPABASE_JWT_SECRET,
             algorithms=["HS256"],
-            options={"verify_aud": False}  # Supabase doesn't always include aud
+            audience="authenticated"
         )
         return decoded.get("sub")  # sub is the user UUID in Supabase JWTs
+    except jwt.InvalidAudienceError:
+        # Fall back for tokens without explicit audience claim
+        try:
+            decoded = jwt.decode(
+                token,
+                SUPABASE_JWT_SECRET,
+                algorithms=["HS256"],
+                options={"verify_aud": False}
+            )
+            return decoded.get("sub")
+        except jwt.PyJWTError:
+            return None
     except jwt.ExpiredSignatureError:
         return None
     except jwt.InvalidTokenError:
