@@ -192,7 +192,7 @@ export default function DashboardPage() {
         <div className="sticky top-0 z-40 bg-black/80 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-white">Overview</h1>
-            <p className="text-sm text-white/40 mt-0.5">Welcome back — here's your bias audit summary</p>
+            <p className="text-sm text-white/40 mt-0.5">Welcome back — here&apos;s your bias audit summary</p>
           </div>
           <Link
             href="http://localhost:8002/upload.html"

@@ -111,11 +111,11 @@ const SVGs = ({ beams, width, height, baseColor, accentColor, gradientColors }: 
           id={`grad${index}`}
           gradientUnits="userSpaceOnUse"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore – framer-motion linearGradient attrs (initial/animate/transition) are untyped
+          // @ts-expect-error ignore – framer-motion linearGradient attrs (initial/animate/transition) are untyped
           initial={beam.gradientConfig.initial}
-          // @ts-ignore
+          // @ts-expect-error ignore
           animate={beam.gradientConfig.animate}
-          // @ts-ignore
+          // @ts-expect-error ignore
           transition={beam.gradientConfig.transition}
         >
           <GradientColors colors={gradientColors} />
