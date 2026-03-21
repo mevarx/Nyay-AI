@@ -3,15 +3,15 @@
 
 const CONFIG = {
   // Backend API
-  API_BASE_URL: "http://localhost:5000",  // Change to Railway URL before submission
+  API_BASE_URL: "https://nyayai-backend.leapcell.app",  // Change to Railway URL before submission
 
   // React Auth UI (change to production URL before deployment)
-  AUTH_LOGIN_URL: "http://localhost:3000",
-  AUTH_SIGNUP_URL: "http://localhost:3000/signup",
+  AUTH_LOGIN_URL: "https://nyayai.web.app/login.html",
+  AUTH_SIGNUP_URL: "https://nyayai.web.app/signup.html",
 
   // Supabase Auth
-  SUPABASE_URL: "YOUR_SUPABASE_URL",        // e.g. https://xxxxx.supabase.co
-  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+  SUPABASE_URL: "https://nghutgwnwqcokguznjjd.supabase.co",        // e.g. https://xxxxx.supabase.co
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5naHV0Z3dud3Fjb2tndXpuampkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDQ4MzgsImV4cCI6MjA4OTU4MDgzOH0.Ll1H4GcuO7LQ6CaDOWu3GyDBanq1v6WyHRltFJG4pA0",
 
   // Gemini API Note: Key is now securely stored in backend .env
   GEMINI_MODEL: "gemini-1.5-flash",

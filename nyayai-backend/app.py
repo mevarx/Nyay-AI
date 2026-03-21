@@ -16,16 +16,8 @@ def create_app():
 
     # Allow frontend to call backend (local dev + production)
     CORS(app, origins=[
-        "http://localhost:3000",
-        "http://localhost:5500",
-        "http://localhost:8000",
-        "http://localhost:8001",
-        "http://localhost:8002",
-        "http://127.0.0.1:8000",
-        "http://127.0.0.1:8001",
-        "http://127.0.0.1:8002",
-        "https://nyayai.web.app",
-        "https://your-firebase-domain.web.app",
+        "https://nyayai-0906.web.app",
+        "https://nyayai-0906.firebaseapp.com",
     ])
 
     # Ensure required folders exist
