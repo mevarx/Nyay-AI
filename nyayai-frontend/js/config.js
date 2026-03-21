@@ -6,8 +6,8 @@ const CONFIG = {
   API_BASE_URL: "https://nyayai-backend.leapcell.app",  // Change to Railway URL before submission
 
   // React Auth UI (change to production URL before deployment)
-  AUTH_LOGIN_URL: "https://nyayai.web.app/login.html",
-  AUTH_SIGNUP_URL: "https://nyayai.web.app/signup.html",
+  AUTH_LOGIN_URL: "https://nyayai-0906.web.app/login.html",
+  AUTH_SIGNUP_URL: "https://nyayai-0906.web.app/signup.html",
 
   // Supabase Auth
   SUPABASE_URL: "https://nghutgwnwqcokguznjjd.supabase.co",        // e.g. https://xxxxx.supabase.co
